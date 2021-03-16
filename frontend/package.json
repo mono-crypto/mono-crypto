@@ -9,7 +9,7 @@
     "build:dev": "cross-env NODE_ENV=development yarn webpack",
     "bhild:prod": "cross-env NODE_ENV=production yarn webpack",
     "start:dev": "cross-env NODE_ENV=development yarn webpack serve",
-    "prepare": "cd .. && husky install front/.husky"
+    "prepare": "cd .. && husky install fronted/.husky"
   },
   "devDependencies": {
     "@types/node": "^14.14.33",
