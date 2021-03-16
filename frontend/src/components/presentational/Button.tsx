@@ -12,9 +12,8 @@ const Button = styled.button.attrs(() => ({
   border-radius: 3px;
 `
 
-const button: React.FC<React.HTMLProps<HTMLButtonElement>> = ({ children, ...rest }) => {
+const button = ({ children, ...rest }) => {
   const htmlProps = rest as any
   return <Button {...htmlProps}>{children}</Button>
 }
-fdsa
 export default button
