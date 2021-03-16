@@ -9,7 +9,8 @@
     "build:dev": "cross-env NODE_ENV=development yarn webpack",
     "bhild:prod": "cross-env NODE_ENV=production yarn webpack",
     "start:dev": "cross-env NODE_ENV=development yarn webpack serve",
-    "prepare": "cd .. && husky install fronted/.husky"
+    "prepare": "cd .. && husky install frontend/.husky",
+    "pre-commit": "lint-staged"
   },
   "devDependencies": {
     "@types/node": "^14.14.33",
@@ -51,11 +52,6 @@
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.1",
     "styled-reset": "^4.3.4"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint"
