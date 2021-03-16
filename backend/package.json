@@ -1,0 +1,16 @@
+{
+  "name": "kb-stock-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start:dev": "set DEBUG=express:* && nodemon index.js"
+  },
+  "dependencies": {
+    "curl": "^0.1.4",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

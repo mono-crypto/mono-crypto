@@ -1,0 +1,34 @@
+{
+  "name": "kb-blog-react-app",
+  "version": "1.0.0",
+  "description": "kb-blog-react-app",
+  "main": "index.js",
+  "author": "LEEKANGBOK",
+  "license": "MIT",
+  "scripts": {
+    "build:dev": "cross-env NODE_ENV=development yarn webpack",
+    "bhild:prod": "cross-env NODE_ENV=production yarn webpack",
+    "start:dev": "cross-env NODE_ENV=development yarn webpack serve"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.8.49",
+    "esbuild-loader": "^2.9.2",
+    "fork-ts-checker-webpack-plugin": "^6.1.0",
+    "html-webpack-plugin": "^5.2.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "typescript": "^4.1.5",
+    "webpack": "^5.23.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "axios": "^0.21.1",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.1",
+    "styled-reset": "^4.3.4"
+  }
+}
