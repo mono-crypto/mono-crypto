@@ -11,7 +11,11 @@
     "start:dev": "cross-env NODE_ENV=development yarn webpack serve"
   },
   "devDependencies": {
+    "@types/node": "^14.14.33",
     "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.2",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.9",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "clean-webpack-plugin": "^3.0.0",
@@ -19,6 +23,7 @@
     "esbuild": "^0.8.49",
     "esbuild-loader": "^2.9.2",
     "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
@@ -32,8 +37,6 @@
     "husky": "^5.1.3",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "typescript": "^4.1.5",
     "webpack": "^5.23.0",
     "webpack-cli": "^4.5.0",
@@ -42,6 +45,8 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "axios": "^0.21.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.1",
     "styled-reset": "^4.3.4"

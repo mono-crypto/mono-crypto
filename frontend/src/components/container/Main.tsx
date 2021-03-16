@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-// API
-import callApi from '../../api/callApi'
-
-// test button
-import Button from '../presentational/Button'
+// // API
+// import callApi from '../../api/callApi'
+//
+// // test button
+// import Button from '../presentational/Button'
 
 const MainWrap = styled.main`
   color: palevioletred;
@@ -22,7 +22,7 @@ interface MainState {
 }
 
 class Main extends React.Component<{}, MainState> {
-  constructor (props) {
+  constructor(props: {}) {
     // this를 위해 ~
     super(props)
 
@@ -31,13 +31,8 @@ class Main extends React.Component<{}, MainState> {
     }
   }
 
-  render () {
-    return (
-
-            <MainWrap>
-                {this.state.value}
-            </MainWrap>
-    )
+  render(): JSX.Element {
+    return <MainWrap>{this.state.value}</MainWrap>
   }
 }
 

@@ -4,5 +4,6 @@
   "semi": false,
   "jsxSingleQuote": true,
   "trailingComma": "none",
-  "arrowParens": "avoid"
+  "arrowParens": "always",
+  "parser": "typescript"
 }

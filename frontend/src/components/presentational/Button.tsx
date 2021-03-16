@@ -12,13 +12,9 @@ const Button = styled.button.attrs(() => ({
   border-radius: 3px;
 `
 
-interface ButtonProps {
-  clickEvent: Function
-  children: React.ReactNode
-}
-
-const button: React.FC<ButtonProps> = (props) => {
-  return <Button onClick={props.clickEvent}>{props.children}</Button>
+const button: React.FC<React.HTMLProps<HTMLButtonElement>> = ({ children, ...rest }) => {
+  const htmlProps = rest as any
+  return <Button {...htmlProps}>{children}</Button>
 }
 
 export default button

@@ -1,5 +1,8 @@
 # Parse all files with TypeScript.
-extends: 'standard-with-typescript'
+extends:
+  - 'standard-with-typescript'
+  - 'prettier'
+
 parserOptions:
   project: './tsconfig.json'
   createDefaultProgram: true
@@ -17,12 +20,11 @@ settings:
 env:
   browser: true
 
-#rules:
-#  react-hooks/rules-of-hooks: errora
-#  react-hooks/exhaustive-deps: error
-#
-#  no-unused-vars: off
-#  '@typescript-eslint/no-unused-vars':
-#    - error
-#    - varsIgnorePattern: _
-#      argsIgnorePattern: _
+rules:
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: error
+  no-unused-vars: off
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - varsIgnorePattern: _
+      argsIgnorePattern: _
