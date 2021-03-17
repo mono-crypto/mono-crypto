@@ -4,17 +4,7 @@ import React from "react";
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
-// react router
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-
 // compoenets
-import Header from "./container/Header";
-import Main from "./container/Main";
-
 const GlobalStyle = createGlobalStyle`
   ${reset}
   *{
@@ -45,15 +35,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App = () => {
+const App:React.FC = () => {
   return (
     <React.Fragment>
       <GlobalStyle />
-      <Header />
-      <Switch>
-          <Route path="/main" component={Main} />
-          <Route path="/" component={Main} />
-      </Switch>
+      <div>zz</div>
     </React.Fragment>
   );
 };

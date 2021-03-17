@@ -1,4 +1,3 @@
-const webpack = require('webpack') // to access built-in plugins
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { ESBuildPlugin } = require('esbuild-loader')
