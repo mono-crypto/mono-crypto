@@ -1,47 +1,59 @@
-import React from "react";
+import React from 'react'
 
 // reset CSS
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
-// compoenets
-const GlobalStyle = createGlobalStyle`
-  ${reset}
-  *{
+const Div = styled.div`
+  font-size: 16px;
+`
+
+const H1 = styled.h1`
+  box-sizing: border-box;
+  width: 100px;
+  height: 1200px;
+  color: #000;
+  font-weight: bold;
+  font-size: 32px;
+`
+
+const GlobalStyle = createGlobalStyle`        
+  ${reset} 
+  * {
     box-sizing:border-box;
   }
-  body{
+  body {
     font-size:16px;
-    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-family: 'Spoqa Han Sans Neo', -apple-system, system-ui, BlinkMacSystemFont,"Malgun Gothic","맑은 고딕",helvetica,"Apple SD Gothic Neo",sans-serif;
   }
-  a{
-      text-decoration:none;
-      color:inherit;
-      cursor: pointer;
+  a {
+    color:inherit;
+    text-decoration:none;
+    cursor: pointer;
   }
   ol, ul, li {
-      list-style: none;
+    list-style: none;
   }
   img {
-      display: block;
-      width: 100%;
-      height: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   input, button {
-      background-color: transparent;
+    background-color: transparent;
   }
-  h1, h2, h3, h4, h5, h6 {
-    font-family:'Maven Pro', sans-serif;
-  }
-`;
+`
 
-const App:React.FC = () => {
+const App: React.FC = () => {
   return (
     <React.Fragment>
       <GlobalStyle />
-      <div>zz</div>
+      <Div>
+        <H1>안녕하세요</H1>
+        <h2>헤딩2</h2>
+      </Div>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default App;
+export default App

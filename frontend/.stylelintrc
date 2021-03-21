@@ -1,0 +1,17 @@
+{
+  "processors": [
+    "stylelint-processor-styled-components"
+  ],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-styled-components",
+    "stylelint-config-prettier",
+    "stylelint-config-rational-order"
+  ],
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "value-keyword-case": null
+  }
+}
