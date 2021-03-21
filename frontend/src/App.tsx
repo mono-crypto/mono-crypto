@@ -4,6 +4,8 @@ import React from "react";
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
+import TradingView from './components/TradingView'
+
 // compoenets
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -39,7 +41,7 @@ const App:React.FC = () => {
   return (
     <React.Fragment>
       <GlobalStyle />
-      <div>zz</div>
+      <TradingView />
     </React.Fragment>
   );
 };
