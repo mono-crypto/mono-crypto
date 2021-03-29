@@ -1,21 +1,10 @@
 import React from 'react'
 
 // reset CSS
-import styled, { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
-const Div = styled.div`
-  font-size: 16px;
-`
-
-const H1 = styled.h1`
-  box-sizing: border-box;
-  width: 100px;
-  height: 1200px;
-  color: #000;
-  font-weight: bold;
-  font-size: 32px;
-`
+import Wallet from '@/pages/Wallet'
 
 const GlobalStyle = createGlobalStyle`        
   ${reset} 
@@ -48,10 +37,7 @@ const App: React.FC = () => {
   return (
     <React.Fragment>
       <GlobalStyle />
-      <Div>
-        <H1>안녕하세요</H1>
-        <h2>헤딩2</h2>
-      </Div>
+      <Wallet />
     </React.Fragment>
   )
 }
