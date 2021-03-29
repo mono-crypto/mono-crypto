@@ -14,6 +14,7 @@ module.exports = {
   },
   resolve: {
     alias: {
+      '@': path.resolve(__dirname, 'src'),
       React: path.resolve(__dirname, './node_modules/react/'),
       ReactDOM: path.resolve(__dirname, './node_modules/react-dom/')
     },
