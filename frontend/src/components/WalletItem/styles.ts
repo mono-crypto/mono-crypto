@@ -4,6 +4,10 @@ export const WalletItem = styled.div`
     padding: 15px;
     border: 1px solid #333;
     border-radius: 8px;
+
+    & + & {
+        margin-top: 4px;
+    }
 `
 export const Header = styled.div`
     font-size: 16px;
