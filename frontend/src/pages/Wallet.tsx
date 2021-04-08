@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
+import useWebSocket from 'react-use-websocket'
 
 import WalletSummary from '@/components/WalletSummary'
 import WalletItem from '@/components/WalletItem'
@@ -13,7 +14,31 @@ export interface IWalletItem {
   reserve: number
 }
 
+export interface ICryptoMarketPrices {
+  [key: string]: {
+    binance: {
+      price: number
+    }
+  }
+}
+
 function Wallet() {
+  const { lastMessage } = useWebSocket(
+    'wss://stream.binance.com:9443/ws/busdusdt@miniTicker/ognbnb@miniTicker/ognbtc@miniTicker/btcusdt@miniTicker'
+  )
+  const cryptoMarketPrices = useRef<ICryptoMarketPrices>({})
+
+  cryptoMarketPrices.current = useMemo(() => {
+    if (lastMessage == null) return cryptoMarketPrices.current
+    const data = JSON.parse(lastMessage.data)
+    cryptoMarketPrices.current[data.s] = {
+      binance: {
+        price: data.c
+      }
+    }
+    return cryptoMarketPrices.current
+  }, [lastMessage])
+
   const [wallItemData] = useState<IWalletItem[]>([
     {
       name: 'BTC',
