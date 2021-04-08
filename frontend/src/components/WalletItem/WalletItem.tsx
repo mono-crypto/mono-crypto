@@ -2,26 +2,32 @@ import React from 'react'
 
 import * as S from './styles'
 
-function WalletItem() {
+import { IWalletItem } from '@/pages/Wallet'
+
+
+interface WalletItemProps {
+    data: IWalletItem;
+}
+function WalletItem({data}:WalletItemProps) {
     return(
         <S.WalletItem>
             <S.Header>
                 <S.Title>
                     {/* 보유 코인종목 */}
-                    BTC
+                    {data.name}
                     <S.TitleTrans>
-                        비트코인
+                        {data.nameKr}
                     </S.TitleTrans>
                 </S.Title>
                 <S.Reserve>
                     {/* 현재 보유량 */}
-                    0.00001
+                    {data.reserve}
                 </S.Reserve>
             </S.Header>
             <S.Content>
                 <S.EvaluationAmount>
                     {/* 평가금액 */}
-                    9,550원
+                    {data.won}
                 </S.EvaluationAmount>
                 <S.Yield>
                     {/* 수익률 */}
