@@ -23,7 +23,7 @@ export class Coin {
   name: string;
 
   @Prop([Market])
-  market: Market[];
+  markets: Market[];
 }
 
 export const CoinSchema = SchemaFactory.createForClass(Coin);
