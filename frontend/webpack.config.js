@@ -37,7 +37,10 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000/'
+        target: 'https://api.locals.mono-crypto.com:3001/',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/api': '' }
       }
     }
   },

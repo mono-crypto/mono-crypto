@@ -29,7 +29,7 @@ function Wallet() {
   const cryptoMarketPrices = useRef<ICryptoMarketPrices>({})
 
   cryptoMarketPrices.current = useMemo(() => {
-    if (lastMessage == null) return cryptoMarketPrices.current
+    if (lastMessage === null) return cryptoMarketPrices.current
     const data = JSON.parse(lastMessage.data)
     cryptoMarketPrices.current[data.s] = {
       binance: {
