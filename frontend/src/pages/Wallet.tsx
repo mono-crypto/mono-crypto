@@ -69,7 +69,7 @@ function Wallet() {
     }
   ])
 
-  const {isLoading:coinIsLoading, data:coinData} = useCoinListQuery();
+  const {isLoading:coinIsLoading, data:coinData, error:coinDataError} = useCoinListQuery();
 
   const mapToWalletItem = (data: IWalletItem[]) => {
     return data.map((data, index) => {
@@ -87,7 +87,7 @@ function Wallet() {
       <WalletChart />
       <WalletItemGroup>{mapToWalletItem(wallItemData)}</WalletItemGroup>
       <CoinListItemGroup>
-      {coinIsLoading ? 'Loading....' : mapToCoinListItem(coinData)}
+      {coinIsLoading ? 'Loading....' : (coinDataError ? 'error' : mapToCoinListItem(coinData))}
       </CoinListItemGroup>
     </>
   )

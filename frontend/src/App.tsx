@@ -5,6 +5,13 @@ import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
 import Wallet from '@/pages/Wallet'
+import ModalTest from '@/pages/ModalTest'
+
+// router
+import {
+  Switch,
+  Route
+} from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 
@@ -32,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
   }
   input, button {
     background-color: transparent;
+    outline: none;
   }
 `
 
@@ -41,7 +49,14 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
-      <Wallet />
+      <Switch>
+        <Route path="/modaltest">
+          <ModalTest />
+        </Route>
+        <Route path="/">
+          <Wallet />
+        </Route>
+      </Switch>
     </QueryClientProvider>
   )
 }
