@@ -8,6 +8,7 @@ import { IWalletItem } from '@/pages/Wallet'
 interface WalletItemProps {
     data: IWalletItem;
 }
+
 function WalletItem({data}:WalletItemProps) {
     return(
         <S.WalletItem>

@@ -6,6 +6,8 @@ import reset from 'styled-reset'
 
 import Wallet from '@/pages/Wallet'
 
+import { QueryClient, QueryClientProvider } from "react-query";
+
 const GlobalStyle = createGlobalStyle`        
   ${reset} 
   * {
@@ -33,12 +35,14 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
+const queryClient = new QueryClient();
+
 const App: React.FC = () => {
   return (
-    <React.Fragment>
+    <QueryClientProvider client={queryClient}>
       <GlobalStyle />
       <Wallet />
-    </React.Fragment>
+    </QueryClientProvider>
   )
 }
 
