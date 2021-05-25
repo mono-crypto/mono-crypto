@@ -5,7 +5,6 @@ import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
 import Wallet from '@/pages/Wallet'
-import ModalTest from '@/pages/ModalTest'
 
 // router
 import {
@@ -14,6 +13,10 @@ import {
 } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "react-query";
+
+import {
+  RecoilRoot
+} from 'recoil';
 
 const GlobalStyle = createGlobalStyle`        
   ${reset} 
@@ -41,23 +44,26 @@ const GlobalStyle = createGlobalStyle`
     background-color: transparent;
     outline: none;
   }
+
+  .flex {
+    display: flex;
+  }
 `
 
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalStyle />
-      <Switch>
-        <Route path="/modaltest">
-          <ModalTest />
-        </Route>
-        <Route path="/">
-          <Wallet />
-        </Route>
-      </Switch>
-    </QueryClientProvider>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <GlobalStyle />
+        <Switch>
+          <Route path="/">
+            <Wallet />
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </RecoilRoot>
   )
 }
 
