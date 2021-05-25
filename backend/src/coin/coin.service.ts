@@ -16,7 +16,7 @@ export class CoinService {
         map((res) =>
           res.data.symbols
             .filter((item) => item.status === 'TRADING')
-            .reduce((result, cur, index) => {
+            .reduce((result, cur) => {
               (result[cur.baseAsset] || (result[cur.baseAsset] = [])).push(
                 cur.quoteAsset,
               );
@@ -29,7 +29,7 @@ export class CoinService {
   getUpbit(): Observable<AxiosResponse<any>> {
     return this.httpService.get('https://api.upbit.com/v1/market/all').pipe(
       map((res) =>
-        res.data.reduce((result, cur, index) => {
+        res.data.reduce((result, cur) => {
           const [quoteAsset, baseAsset] = cur.market.split('-');
           (result[baseAsset] || (result[baseAsset] = [])).push(quoteAsset);
           return result;

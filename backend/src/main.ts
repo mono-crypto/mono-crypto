@@ -16,6 +16,6 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ https: httpsOptions }),
   );
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
