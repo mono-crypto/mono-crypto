@@ -24,3 +24,11 @@ export const Wrapper = styled.div`
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
     transform: translate(-50%, -50%);
 `
+
+export const Content = styled.div`
+    display: inline-block;    
+`
+
+export const BottomButtons = styled.div`
+    display: flex;
+`

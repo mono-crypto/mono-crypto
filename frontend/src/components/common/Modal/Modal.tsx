@@ -8,23 +8,24 @@ type ModalProps = {
     children: React.ReactNode
     changeDialogState: () => void
     visible: boolean
+    hasBottomBtn: boolean
 }
 
-function Modal({children, changeDialogState, visible}:ModalProps) {
-    if(!visible) return null
+function Modal({...props}:ModalProps) {
+    if(!props.visible) return null
     return(
         <S.Dimm>
             <S.Wrapper>
-                <div className="content">
-                    {children}
-                </div>
-                <div className="buttons">
-                    <div className="flex">
-                        {visible}
-                        <Button onClick={changeDialogState}>취소</Button>
+                <S.Content>
+                    {props.children}
+                </S.Content>
+                {
+                    props.hasBottomBtn &&
+                    <S.BottomButtons>
+                        <Button onClick={props.changeDialogState}>취소</Button>
                         <Button>확인</Button>
-                    </div>
-                </div>
+                    </S.BottomButtons>
+                }
             </S.Wrapper>
         </S.Dimm>
     )

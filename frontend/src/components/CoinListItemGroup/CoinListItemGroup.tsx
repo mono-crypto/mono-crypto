@@ -24,7 +24,7 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
             <div>
                 {children}
             </div>
-            <Modal changeDialogState={changeDialogState} visible={coinDialogState}>
+            <Modal changeDialogState={changeDialogState} visible={coinDialogState} hasBottomBtn={true}>
                 <div>
                     <Label>
                         <span>Market</span>
