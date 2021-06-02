@@ -92,7 +92,7 @@ function Wallet() {
       <WalletItemGroup>{mapToWalletItem(wallItemData)}</WalletItemGroup>
       <CoinListItemGroup>
         <ListItemFilter/>
-      {coinIsLoading ? 'Loading....' : (coinDataError !== null ? 'error' : mapToCoinListItem(coinData))}
+        {coinIsLoading ? 'Loading....' : (coinDataError !== null ? 'error' : mapToCoinListItem(coinData))}
       </CoinListItemGroup>
     </>
   )
