@@ -2,12 +2,16 @@ import React, { useState, useRef, useMemo } from 'react'
 import useWebSocket from 'react-use-websocket'
 
 import WalletSummary from '@/components/WalletSummary'
+
 import WalletItem from '@/components/WalletItem'
 import WalletItemGroup from '@/components/WalletItemGroup'
+
 import WalletChart from '@/components/WalletChart'
 
 import CoinListItemGroup from '@/components/CoinListItemGroup'
 import CoinListItem from '@/components/CoinListItem'
+
+import ListItemFilter from '@/components/ListItemFilter'
 
 import useCoinListQuery from '@/hooks/query/useCoinListQuery'
 
@@ -69,7 +73,7 @@ function Wallet() {
     }
   ])
 
-  const {isLoading:coinIsLoading, data:coinData} = useCoinListQuery();
+  const {isLoading:coinIsLoading, data:coinData, error:coinDataError} = useCoinListQuery();
 
   const mapToWalletItem = (data: IWalletItem[]) => {
     return data.map((data, index) => {
@@ -87,7 +91,8 @@ function Wallet() {
       <WalletChart />
       <WalletItemGroup>{mapToWalletItem(wallItemData)}</WalletItemGroup>
       <CoinListItemGroup>
-      {coinIsLoading ? 'Loading....' : mapToCoinListItem(coinData)}
+        <ListItemFilter/>
+      {coinIsLoading ? 'Loading....' : (coinDataError !== null ? 'error' : mapToCoinListItem(coinData))}
       </CoinListItemGroup>
     </>
   )
