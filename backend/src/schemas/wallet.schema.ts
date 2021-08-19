@@ -5,8 +5,14 @@ export type WalletDocument = Wallet & Document;
 
 @Schema()
 export class Wallet {
-  @Prop()
+  @Prop({ required: true })
+  ticker: string;
+
+  @Prop({ required: true })
   market: string;
+
+  @Prop({ required: true })
+  ea: number;
 
   @Prop({ required: true })
   price: number;
