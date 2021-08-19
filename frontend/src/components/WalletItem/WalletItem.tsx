@@ -2,11 +2,11 @@ import React from 'react'
 
 import * as S from './styles'
 
-import { IWalletItem } from '@/pages/Wallet'
+import { WalletItem as TWalletItem } from '@/lib/api/types'
 
 
 interface WalletItemProps {
-    data: IWalletItem;
+    data: TWalletItem;
 }
 
 function WalletItem({data}:WalletItemProps) {
@@ -15,20 +15,20 @@ function WalletItem({data}:WalletItemProps) {
             <S.Header>
                 <S.Title>
                     {/* 보유 코인종목 */}
-                    {data.name}
+                    {data.ticker}
                     <S.TitleTrans>
-                        {data.nameKr}
+                        {data.ticker}
                     </S.TitleTrans>
                 </S.Title>
                 <S.Reserve>
                     {/* 현재 보유량 */}
-                    {data.reserve}
+                    {data.ea}
                 </S.Reserve>
             </S.Header>
             <S.Content>
                 <S.EvaluationAmount>
                     {/* 평가금액 */}
-                    {data.won}
+                    {data.avgPrice}
                 </S.EvaluationAmount>
                 <S.Yield>
                     {/* 수익률 */}

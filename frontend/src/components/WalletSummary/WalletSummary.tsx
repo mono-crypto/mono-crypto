@@ -1,11 +1,26 @@
 import React from 'react'
 import * as S from './styles'
 
-function WalletSummary() {
+import { WalletItem as TWalletItem } from '@/lib/api/types'
+
+interface WalletSummaryProps {
+    data?: TWalletItem[]
+}
+
+function WalletSummary({...props}: WalletSummaryProps) {
+  const summaryData = {
+    convertPrice: 0
+  };
+  const data = props.data !== undefined ? props.data.reduce((result, cur) => {
+    console.log(cur)
+    result.convertPrice += parseInt(cur.convertPrice)
+    return result
+  }, summaryData) : null;
+
   return (
     <S.WalletSummary>
       <S.Title>총 보유자산</S.Title>
-      <S.MainTotal>40,000,000원</S.MainTotal>
+      <S.MainTotal>{summaryData.convertPrice.toLocaleString()}원</S.MainTotal>
       <S.SubTotal>≈ 0.5BTC</S.SubTotal>
       <S.RevenueContent>
         <S.RevenueContentTitle>평가손익</S.RevenueContentTitle>

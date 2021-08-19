@@ -31,4 +31,12 @@ export const Content = styled.div`
 
 export const BottomButtons = styled.div`
     display: flex;
+    margin-top: 20px;
+`
+
+export const Title = styled.div`
+    display: block;
+    margin-bottom: 20px;
+    font-size: 20px;
+
 `

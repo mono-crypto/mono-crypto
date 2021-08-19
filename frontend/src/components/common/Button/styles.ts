@@ -12,4 +12,7 @@ export const Button = styled.button`
     &:focus {
         border-color: #409eff;
     }
+    &:active {
+        background-color: #409eff;
+    }
 `

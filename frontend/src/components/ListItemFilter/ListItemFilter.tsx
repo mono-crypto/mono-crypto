@@ -10,8 +10,7 @@ function ListItemFilter() {
     const { state } = useRecoilValue(coinListState)
 
     const changeListItemFilterInput = ({ target: { value } }) => {
-        console.log(value)
-        setListItemFilterInput(value);
+        setListItemFilterInput(value)
     }
     return(
         <>

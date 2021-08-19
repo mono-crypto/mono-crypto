@@ -15,7 +15,10 @@ export default function CoinListItem(props:WalletItemProps) {
     const [coinDialogState, setCoinDialogState] = useRecoilState(addCoinDialogState);
 
     const changeDialogState = () => {
-        setCoinDialogState(!coinDialogState)
+        setCoinDialogState({
+            'ticker': props.data,
+            'state': !coinDialogState.state
+        })
     }
 
     return(
