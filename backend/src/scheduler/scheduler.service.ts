@@ -11,7 +11,7 @@ import { AxiosResponse } from 'axios';
 import {
   exchangeInfo,
   exchangeInfoDocument,
-} from '../schemas/exchangeInfo.schema';
+} from '../schemas/scheduler.exchangeInfo.schema';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

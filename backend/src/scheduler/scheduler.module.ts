@@ -9,7 +9,7 @@ import { SchedulerController } from './scheduler.controller';
 import {
   exchangeInfo,
   exchangeInfoSchema,
-} from '../schemas/exchangeInfo.schema';
+} from '../schemas/scheduler.exchangeInfo.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({

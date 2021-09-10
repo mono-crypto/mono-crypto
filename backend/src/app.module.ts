@@ -7,6 +7,7 @@ import { CoinModule } from './coin/coin.module';
 import { WalletModule } from './wallet/wallet.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { ConfigModule } from '@nestjs/config';
+import { ExchangeInfoModule } from './exchange-info/exchange-info.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     CoinModule,
     WalletModule,
     SchedulerModule,
+    ExchangeInfoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
