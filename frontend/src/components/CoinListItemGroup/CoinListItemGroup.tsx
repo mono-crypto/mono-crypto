@@ -38,7 +38,6 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
     }
     
     const modalConfirmAction = async() => {
-        console.log(coinDialogLoadingState)
         setCoinDialogLoadingState({
             loading: true
         });

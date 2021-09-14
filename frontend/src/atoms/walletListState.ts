@@ -1,8 +1,7 @@
 import {
-    atom, useSetRecoilState
+    atom
   } from 'recoil';
 import { WalletItem as TWalletItem } from '@/lib/api/types'
-import { getWalletList } from '@/lib/api/wallet/getWalletList'
 
 export type WalletListState = {
     loading: boolean

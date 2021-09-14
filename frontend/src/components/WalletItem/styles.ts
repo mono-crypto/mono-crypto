@@ -27,12 +27,19 @@ export const TitleTrans = styled.span`
     font-size: 12px;
     vertical-align: middle;
 `
-export const Reserve = styled.div`
-    margin-top: 10px;
-`
-export const EvaluationAmount = styled.div`
+export const contentDescription = styled.div`
+    display: flex;
+    justify-content: space-between;
     color: #888;
 `
-export const Yield = styled.div`
-    margin-top: 10px
+export const Detail = styled.div`
+    margin-top: 5px
+`
+export const DetailDescription = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px
+`
+export const testspan = styled.span`
+    color: ${props => props.color}
 `

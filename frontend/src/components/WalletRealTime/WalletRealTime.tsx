@@ -1,15 +1,12 @@
 import React, { useRef, useMemo } from 'react'
-import useWebSocket from 'react-use-websocket'
 
 import WalletSummary from '@/components/WalletSummary'
 import WalletItemGroup from '@/components/WalletItemGroup'
 import WalletItem from '@/components/WalletItem'
 
-import { useWalletListQuery } from '@/hooks/query/useWalletListQuery'
-
 import { WalletItem as TWalletItem } from '@/lib/api/types'
 
-import * as S from './styles'
+import { walletRealTimeHook } from '@/hooks/walletRealTimeHook'
 
 export interface ICryptoMarketPrices {
     [key: string]: {
@@ -20,37 +17,37 @@ export interface ICryptoMarketPrices {
 }
 
 function WalletRealTime() {
-    const { lastMessage } = useWebSocket(
-        'wss://stream.binance.com:9443/ws/btcusdt@miniTicker'
-    )
+    const { exchangeInfoData, walletItemListData, socketMessage } = walletRealTimeHook();
     const cryptoMarketPrices = useRef<ICryptoMarketPrices>({})
 
     cryptoMarketPrices.current = useMemo(() => {
-        if (lastMessage === null) return cryptoMarketPrices.current
-        const data = JSON.parse(lastMessage.data)
+        if (socketMessage === null) return cryptoMarketPrices.current
+        const data = JSON.parse(socketMessage.data)
         cryptoMarketPrices.current[data.s] = {
             binance: {
                 price: data.c
             }
         }
         return cryptoMarketPrices.current
-    }, [lastMessage])
+    }, [socketMessage])
 
-    console.log(cryptoMarketPrices.current.BTCUSDT?.binance.price);
-
-  const {isLoading:walletListLoading, data:walletListData, error:walletListError} = useWalletListQuery();
+  const exchangeInfoAboutDollar = (data) => {
+    if(data) {
+      return data[0].data.filter( item => item.cur_unit == "USD" )
+    }
+  }
 
   const mapToWalletItem = (data: TWalletItem[]) => {
     return data.map((data, index) => 
-      <WalletItem data={data} key={index} />
+      <WalletItem data={data} key={index} valuationAmount={(exchangeInfoData ? (cryptoMarketPrices.current[data.ticker+data.market]?.binance.price * data.ea)*exchangeInfoAboutDollar(exchangeInfoData)[0].bkpr.replaceAll(/\,/g, '') : 0)}/>
     )
   }
 
   return (
       <>
-        <WalletSummary data={walletListData}/>
+        <WalletSummary data={walletItemListData.walletItems} exchangeInfo={exchangeInfoAboutDollar(exchangeInfoData)} btcPrice={cryptoMarketPrices.current.BTCUSDT?.binance.price}/>
         <WalletItemGroup>
-          {walletListLoading ? 'Loading....' : (walletListError !== null ? 'error' : mapToWalletItem(walletListData))}
+          {mapToWalletItem(walletItemListData.walletItems)}
         </WalletItemGroup>
       </>
   )

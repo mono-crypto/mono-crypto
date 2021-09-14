@@ -12,6 +12,8 @@ export type WalletItem = {
     ticker: string
     avgPrice: number
     ea: number
+    price: number
+    market: string
     // - (추가적 - 내부로직) 해당 시점의 마켓 to USDT ( 환산가격 )
 }
 

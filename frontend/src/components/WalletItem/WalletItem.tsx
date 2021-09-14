@@ -7,9 +7,62 @@ import { WalletItem as TWalletItem } from '@/lib/api/types'
 
 interface WalletItemProps {
     data: TWalletItem;
+    valuationAmount: number;
 }
 
-function WalletItem({data}:WalletItemProps) {
+interface IwallItemDataForJSX {
+    name: String;
+    data: number | String;
+}
+
+function WalletItem({data, valuationAmount}:WalletItemProps) {
+    const contentData = [
+        {
+            name: '평가손익',
+            data: ((data.ea * data.price) - Math.round(valuationAmount)).toLocaleString(),
+        },
+        {
+            name: '수익률',
+            data: ((Math.round(valuationAmount) / (data.ea * data.price)) * 100 - 100).toFixed(2) + ' %'
+        }
+    ]
+    const detailData = [
+        {
+            name: '매수평균가',
+            data: data.price.toLocaleString()+' 원',
+        },
+        {
+            name: '평가금액',
+            data: (valuationAmount ? Math.round(valuationAmount).toLocaleString() : '') + ' 원',
+        },
+        {
+            name: '매수금액',
+            data: (data.ea * data.price).toLocaleString() + ' 원',
+        },
+        {
+            name: '보유수량',
+            data: data.ea + ' ' + data.ticker,
+        }
+    ]
+
+    const contentDataJSX = (contentDataArray: IwallItemDataForJSX[]) => {
+        return contentDataArray.map((item, index) => {
+            return <S.contentDescription key={index}>
+                <span>{item.name}</span>
+                <S.testspan color={Number(item.data) > 0 ? 'red' : "#0e52cf"}>{item.data}</S.testspan>
+            </S.contentDescription>
+        })
+    }
+
+    const detailDataJSX = (detailDataArray: IwallItemDataForJSX[]) => {
+        return detailDataArray.map((item, index) => {
+            return <S.DetailDescription key={index}>
+                <span>{item.name}</span>
+                <span>{item.data}</span>
+            </S.DetailDescription>
+        })
+    }
+
     return(
         <S.WalletItem>
             <S.Header>
@@ -20,21 +73,13 @@ function WalletItem({data}:WalletItemProps) {
                         {data.ticker}
                     </S.TitleTrans>
                 </S.Title>
-                <S.Reserve>
-                    {/* 현재 보유량 */}
-                    {data.ea}
-                </S.Reserve>
             </S.Header>
             <S.Content>
-                <S.EvaluationAmount>
-                    {/* 평가금액 */}
-                    {data.avgPrice}
-                </S.EvaluationAmount>
-                <S.Yield>
-                    {/* 수익률 */}
-                    -0.20(-20%)
-                </S.Yield>
+                {contentDataJSX(contentData)}
             </S.Content>
+            <S.Detail>
+                {detailDataJSX(detailData)}
+            </S.Detail>
         </S.WalletItem>
     )
 }
