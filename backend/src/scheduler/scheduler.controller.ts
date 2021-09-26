@@ -7,8 +7,12 @@ export class SchedulerController {
 
   @Get()
   async getHello(): Promise<any> {
-    const res = await this.schedulerService.configServiceTest();
+    const res = await this.schedulerService.exchangeInfo().toPromise();
 
-    return res;
+    const dto = {
+      data: res.data,
+    };
+
+    return dto;
   }
 }

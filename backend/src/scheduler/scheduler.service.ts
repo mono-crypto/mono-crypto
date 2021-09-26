@@ -68,8 +68,8 @@ export class SchedulerService {
       return item.result != 1;
     });
 
-    if (saveFlag) {
-      this.logger.log('crawling error');
+    if (saveFlag || dto.data.length == 0) {
+      this.logger.log('crawling error : ', JSON.stringify(dto.data));
     } else {
       const exchangeInfoItems = new this.exchangeInfoModel(dto);
       exchangeInfoItems.save();
