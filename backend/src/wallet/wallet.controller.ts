@@ -10,6 +10,7 @@ import {
 import { WalletService } from './wallet.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { DeleteWalletDto } from './dto/delete-wallet.dto';
 
 @Controller('wallet')
 export class WalletController {
@@ -35,8 +36,8 @@ export class WalletController {
     return this.walletService.update(+id, updateWalletDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.walletService.remove(+id);
+  @Delete()
+  remove(@Body() deleteWalletDto: DeleteWalletDto) {
+    return this.walletService.remove(deleteWalletDto);
   }
 }

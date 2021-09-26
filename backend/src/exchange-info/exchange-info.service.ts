@@ -21,7 +21,7 @@ export class ExchangeInfoService {
   }
 
   findAll() {
-    return `This action returns all exchangeInfo`;
+    return this.exchangeInfoModel.find();
   }
 
   findOne(id: number) {
