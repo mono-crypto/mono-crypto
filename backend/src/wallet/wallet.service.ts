@@ -27,8 +27,11 @@ export class WalletService {
     return `This action returns a #${id} wallet`;
   }
 
-  update(id: number, updateWalletDto: UpdateWalletDto) {
-    return `This action updates a #${id} wallet`;
+  update(updateWalletDto: UpdateWalletDto) {
+    return this.walletModel.updateOne(
+      { _id: mongoose.Types.ObjectId(updateWalletDto._id) },
+      updateWalletDto,
+    );
   }
 
   remove(deleteWalletDto: DeleteWalletDto) {
