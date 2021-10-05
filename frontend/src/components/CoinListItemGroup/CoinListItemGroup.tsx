@@ -8,10 +8,9 @@ import Modal from '@/components/common/Modal'
 import { useRecoilState } from 'recoil'
 import { addCoinDialogState, loadingAddCoinDialog } from '@/atoms/addCoinDialog'
 
-import { addWalletList } from '@/lib/api/wallet/addWalletList'
 import { addWalletItem as TaddWalletItem } from '@/lib/api/types'
 
-import { walletListHook } from '@/hooks/walletListhook'
+import { coinListItemGroupHook } from '@/hooks/coinListItemGroup'
 
 interface CoinListItemGroupProps {
     children: React.ReactNode
@@ -20,16 +19,16 @@ interface CoinListItemGroupProps {
 function CoinListItemGroup({children}: CoinListItemGroupProps) {
     const [coinDialogState, setCoinDialogState] = useRecoilState(addCoinDialogState);
     const [coinDialogLoadingState, setCoinDialogLoadingState] = useRecoilState(loadingAddCoinDialog);
-
+    const { mutation } = coinListItemGroupHook();
+    
     const [modalValues, setModalValues] = useState<TaddWalletItem>({
         ticker: '',
         market: '',
         price: 0,
+        ea: 0,
         date: '',
         convertPrice: 0
     });
-
-    const { addWalletListMuation } = walletListHook();
 
     const changeDialogState = () => {
         setCoinDialogState({
@@ -42,10 +41,10 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
             loading: true
         });
         try {
-            const addWalletListResult = await addWalletList({
+            await mutation.mutate({
                 ...modalValues,
                 'ticker': coinDialogState.ticker,
-            });
+            })
         } catch(e) {
             console.log(e);
         }
@@ -61,6 +60,7 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
             ...modalValues,
             [e.currentTarget.name]: value
         });
+        console.log(value)
     }
 
     return (
@@ -73,7 +73,7 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
                     <Label>
                         <span>마켓</span>
                         <div>
-                            <Input type="text" name="market" onChange={onChangeModalInput} value=""/>
+                            <Input type="text" name="market" onChange={onChangeModalInput} value={modalValues.market}/>
                         </div>
                     </Label>
                 </div>
@@ -86,13 +86,13 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
                 <div>
                     <Label>
                         <span>수량</span>
-                        <Input type="number" name="ea" onChange={onChangeModalInput} value=""/>
+                        <Input type={"number"} name={"ea"} onChange={onChangeModalInput} value={modalValues.ea}/>
                     </Label>
                 </div>
                 <div>
                     <Label>
                         <span>날짜</span>
-                        <Input type="text" name="date" onChange={onChangeModalInput} value={modalValues.date}/>
+                        <Input type={"text"} name={"date"} onChange={onChangeModalInput} value={modalValues.date}/>
                     </Label>
                 </div>
             </Modal>

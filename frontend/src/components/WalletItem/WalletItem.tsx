@@ -3,12 +3,16 @@ import React, { useState } from 'react'
 import * as S from './styles'
 
 import { WalletItem as TWalletItem } from '@/lib/api/types'
+
 import Button from '@/components/common/Button'
+import { walletItemHook } from '@/hooks/walletItemHook'
 
 
 interface WalletItemProps {
     data: TWalletItem;
     valuationAmount: number;
+    deleteWalletItemFn?: () => void;
+    updateWalletItemFn?: () => void;
 }
 
 interface IwallItemDataForJSX {
@@ -19,8 +23,8 @@ interface IwallItemDataForJSX {
 }
 
 function WalletItem({data, valuationAmount}:WalletItemProps) {
-    console.log(data, valuationAmount)
     const [flipFalg, setFlipFlag] = useState(true);
+    const { deleteWalletItemMutation, updateWalletDialogDisplay, setUpdateWalletDialogState, setUpdateWalletDialogDisplay } = walletItemHook();
 
     const contentData = [
         {
@@ -73,10 +77,6 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
         })
     }
 
-    const changeFlipFalg = () => {
-        setFlipFlag(!flipFalg)
-    }
-
     const detailDataJSX = (detailDataArray: IwallItemDataForJSX[]) => {
         return detailDataArray.map((item, index) => {
             return (<React.Fragment key={index}>
@@ -87,6 +87,29 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
                     {item.data} {item.unit}
                 </S.DetailDescription>
             </React.Fragment>)
+        })
+    }
+
+    const changeFlipFalg = () => {
+        setFlipFlag(!flipFalg)
+    }
+    const deleteWalletItem = () => {
+        deleteWalletItemMutation.mutate(data._id)
+        // 업데이트 필요
+    }
+
+    const changeDialogState = () => {
+        const date = new Date(data.date);
+        setUpdateWalletDialogState({
+            '_id': data._id,
+            'ticker': data.ticker.toUpperCase(),
+            'market': data.market.toUpperCase(),
+            'price' : data.price,
+            'ea' : data.ea,
+            'date': date.getFullYear().toString() + ((date.getMonth()+1).toString().length < 2 ? '0'+(date.getMonth()+1).toString() : (date.getMonth()+1).toString()) + ((date.getDate()).toString().length < 2 ? '0'+(date.getDate()).toString() : (date.getDate()).toString()),
+        })
+        setUpdateWalletDialogDisplay({
+            'state': !updateWalletDialogDisplay.state
         })
     }
 
@@ -108,8 +131,8 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
             <S.Detail detailFlip={flipFalg} >
                 {detailDataJSX(detailData)}
                 <S.EditButtons>
-                    <Button>삭제</Button>
-                    <Button>수정</Button>
+                    <Button onClick={deleteWalletItem}>삭제</Button>
+                    <Button onClick={changeDialogState}>수정</Button>
                 </S.EditButtons>
             </S.Detail>
         </S.WalletItem>

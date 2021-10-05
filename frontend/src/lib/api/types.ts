@@ -9,19 +9,31 @@ export type Markets = {
 };
 
 export type WalletItem = {
+    _id: string
     ticker: string
-    avgPrice: number
     ea: number
     price: number
     market: string
-    // - (추가적 - 내부로직) 해당 시점의 마켓 to USDT ( 환산가격 )
+    date: string
 }
 
 export type addWalletItem = {
     ticker?: string
     market: string
     price: number
+    ea: number,
     date: string
     convertPrice: number,
     loading?: boolean,
+}
+
+export type deleteWalletItem = {
+    id: string
+}
+
+export type updateWalletItem = {
+    _id: string
+    ea?: number
+    price?: number
+    date?: string
 }

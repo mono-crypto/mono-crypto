@@ -1,10 +1,8 @@
-import React, { useRef, useMemo } from 'react'
+import React from 'react'
 
 import WalletSummary from '@/components/WalletSummary'
 import WalletItemGroup from '@/components/WalletItemGroup'
 import WalletItem from '@/components/WalletItem'
-
-import { WalletItem as TWalletItem } from '@/lib/api/types'
 
 import { walletRealTimeHook } from '@/hooks/walletRealTimeHook'
 
@@ -17,37 +15,29 @@ export interface ICryptoMarketPrices {
 }
 
 function WalletRealTime() {
-    const { exchangeInfoData, walletItemListData, socketMessage } = walletRealTimeHook();
-    const cryptoMarketPrices = useRef<ICryptoMarketPrices>({})
-
-    cryptoMarketPrices.current = useMemo(() => {
-        if (socketMessage === null) return cryptoMarketPrices.current
-        const data = JSON.parse(socketMessage.data)
-        cryptoMarketPrices.current[data.s] = {
-            binance: {
-                price: data.c
-            }
-        }
-        return cryptoMarketPrices.current
-    }, [socketMessage])
-
-  const exchangeInfoAboutDollar = (data) => {
+  const { exchangeInfoData, walletItemListData, cryptoMarketPrices } = walletRealTimeHook();
+  const exchangeInfoAboutDollar = (data:Array<any>) => {
     if(data) {
-      return data[0].data.filter( item => item.cur_unit == "USD" )
+      let USDDataArray = data[0].data.filter( (item: { cur_unit: string }) => item.cur_unit == "USD" )
+      return USDDataArray[0].bkpr.replaceAll(/\,/g, '')
     }
   }
 
-  const mapToWalletItem = (data: TWalletItem[]) => {
-    return data.map((data, index) => 
-      <WalletItem data={data} key={index} valuationAmount={(exchangeInfoData ? (cryptoMarketPrices.current[data.ticker+data.market]?.binance.price * data.ea)*exchangeInfoAboutDollar(exchangeInfoData)[0].bkpr.replaceAll(/\,/g, '') : 0)}/>
+  const mapToWalletItem = () => {
+    return walletItemListData.map((data, index) => 
+      <WalletItem
+        data={data}
+        key={index}
+        valuationAmount={(exchangeInfoData ? (cryptoMarketPrices.current[(data.ticker+data.market).toUpperCase()]?.binance.price * data.ea)*exchangeInfoAboutDollar(exchangeInfoData) : 0)
+      }/>
     )
   }
 
   return (
       <>
-        <WalletSummary data={walletItemListData.walletItems} exchangeInfo={exchangeInfoAboutDollar(exchangeInfoData)} btcPrice={cryptoMarketPrices.current.BTCUSDT?.binance.price}/>
+        <WalletSummary cryptoMarketPrices={cryptoMarketPrices} data={walletItemListData} exchangeInfo={exchangeInfoAboutDollar(exchangeInfoData)}/>
         <WalletItemGroup>
-          {mapToWalletItem(walletItemListData.walletItems)}
+          {mapToWalletItem()}
         </WalletItemGroup>
       </>
   )

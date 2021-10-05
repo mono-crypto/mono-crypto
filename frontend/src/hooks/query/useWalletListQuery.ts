@@ -1,8 +1,10 @@
 import { useQuery, useMutation } from 'react-query'
 import { getWalletList } from '@/lib/api/wallet/getWalletList'
+import { deleteWalletItem } from '@/lib/api/wallet/deleteWalletItem'
 import { addWalletList } from '@/lib/api/wallet/addWalletList'
 
 import { addWalletItem as TaddWalletItem } from '@/lib/api/types'
+import { useCallback } from 'react'
  
 export function useWalletListQuery() {
   return useQuery('walletList', getWalletList)
@@ -31,4 +33,21 @@ export function addWalletListQuery() {
       queryClient.invalidateQueries('todos')
     },
   })
+}
+
+export function deleteWalletListQuery(walletItemId:string) {
+  
+  // return useMutation(newWalletList => deleteWalletItem(walletItemId))
+
+  // const handleSubmit = useCallback(
+  //     (walletList) => {
+  //         console.log(walletList)
+  //         mutation.mutate(walletList)
+  //     },
+  //     [mutation],
+  // )
+
+  return {
+
+  }
 }

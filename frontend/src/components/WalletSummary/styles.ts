@@ -35,6 +35,6 @@ export const RevenueContentTitle = styled.dt`
 `
 
 export const RevenueContentDescription = styled.dd`
-  color: #0e52cf;
+  color: ${props => props.color};
   text-align: right;
 `

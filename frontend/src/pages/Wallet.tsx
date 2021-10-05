@@ -10,24 +10,25 @@ import CoinListItem from '@/components/CoinListItem'
 
 import useCoinListQuery from '@/hooks/query/useCoinListQuery'
 
-import { CoinListItem as TCoinListItem, WalletItem as TWalletItem } from '@/lib/api/types'
+import { CoinListItem as TCoinListItem } from '@/lib/api/types'
 
 import Input from '@/components/common/Input'
 import { coinListFilterInput } from '@/atoms/coinListState'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import styled from 'styled-components'
+import { walletItemList } from '@/atoms/walletListState'
 
 const CoinListItemGroupDiv = styled.div`
   margin-top: 20px;
 `;
-
+const WalletWrap = styled.div`
+  padding: 10px;
+`;
 
 function Wallet() {
   console.log("wallet rendering ...");
   const {isLoading:coinIsLoading, data:coinData, error:coinDataError} = useCoinListQuery();
-
-  
 
   const mapToCoinListItem = (data: TCoinListItem[]) => {
     return data.filter( item => item.name.toLowerCase().includes(filterInput.toLowerCase())).map((data, index) => (<CoinListItem key={index} data={data.name} />))
@@ -41,16 +42,16 @@ function Wallet() {
   }
 
   return (
-    <>
-      <WalletChart />
+    <WalletWrap>
+      <WalletChart/>
       <WalletRealTime />
       <CoinListItemGroupDiv>
         <CoinListItemGroup>
-          <Input type="text" onChange={changeListItemFilterInput}/>
+          <Input type="text" onChange={changeListItemFilterInput} huge />
           {coinIsLoading ? 'Loading....' : (coinDataError !== null ? 'error' : mapToCoinListItem(coinData))}
         </CoinListItemGroup>
       </CoinListItemGroupDiv>
-    </>
+    </WalletWrap>
   )
 }
 

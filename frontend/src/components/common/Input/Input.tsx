@@ -6,7 +6,7 @@ interface CommonInputInterface {
     type: string
     onChange?: (e: React.FormEvent<HTMLInputElement>) => void
     name?: string
-    value?: any,
+    value?: any
     readOnly?: boolean
     disabled?: boolean
 }
@@ -14,7 +14,14 @@ interface CommonInputInterface {
 function Input({ ...props }: CommonInputInterface) {
 
     return (
-        <S.Input type={props.type} name={props.name} onChange={props.onChange} readOnly={(props.readOnly === true)} disabled={(props.disabled === true)}/>
+        <S.Input
+            type={props.type}
+            name={props.name}
+            value={props.value}
+            onChange={props.onChange}
+            readOnly={(props.readOnly === true)}
+            disabled={(props.disabled === true)}
+        />
     )
 }
 
