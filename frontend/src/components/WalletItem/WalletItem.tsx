@@ -125,16 +125,22 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
                 </S.Title>
                 <S.filpTrigger onClick={changeFlipFalg} flipFlag={flipFalg}/>
             </S.Header>
-            <S.Content>
-                {contentDataJSX(contentData)}
-            </S.Content>
-            <S.Detail detailFlip={flipFalg} >
-                {detailDataJSX(detailData)}
-                <S.EditButtons>
-                    <Button onClick={deleteWalletItem}>삭제</Button>
-                    <Button onClick={changeDialogState}>수정</Button>
-                </S.EditButtons>
-            </S.Detail>
+            <S.ContentWrap>
+                <S.Content>
+                    {contentDataJSX(contentData)}
+                </S.Content>
+                <S.Detail detailFlip={flipFalg} >
+                    {detailDataJSX(detailData)}
+                </S.Detail>
+            </S.ContentWrap>
+            <S.EditButtons>
+                <Button onClick={deleteWalletItem} css={
+                    {
+                        'padding': '0.3rem 0',
+                    }
+                }>삭제</Button>
+                <Button onClick={changeDialogState}>수정</Button>
+            </S.EditButtons>
         </S.WalletItem>
     )
 }

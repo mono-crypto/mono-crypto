@@ -80,5 +80,14 @@ export const DetailDescription = styled.dd`
   text-align: right;
 `
 export const EditButtons = styled.div`
-  display: flex
+  display: flex;
+  margin-top: 1rem;
+
+  button ~ button {
+    margin-left: 3rem;
+  }
+`
+export const ContentWrap = styled.div`
+    display: inline-block;
+    width: 100%;
 `
