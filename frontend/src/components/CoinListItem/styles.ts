@@ -5,11 +5,12 @@ export const CoinListItem = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 15px;
-    border: 1px solid #333;
+    background-color: white;
+    border: 1px solid rgb(236, 239, 241);
     border-radius: 8px;
 
     & + & {
-        margin-top: 4px;
+        margin-top: 0.6rem;
     }
 `
 

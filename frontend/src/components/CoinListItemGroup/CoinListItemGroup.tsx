@@ -2,15 +2,18 @@ import React, { useState } from 'react'
 
 import Input from '@/components/common/Input'
 import Label from '@/components/common/Label'
-
 import Modal from '@/components/common/Modal'
 
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { addCoinDialogState, loadingAddCoinDialog } from '@/atoms/addCoinDialog'
 
 import { addWalletItem as TaddWalletItem } from '@/lib/api/types'
 
 import { coinListItemGroupHook } from '@/hooks/coinListItemGroup'
+
+import { coinListFilterInput } from '@/atoms/coinListState'
+
+import * as S from './styles'
 
 interface CoinListItemGroupProps {
     children: React.ReactNode
@@ -20,6 +23,19 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
     const [coinDialogState, setCoinDialogState] = useRecoilState(addCoinDialogState);
     const [coinDialogLoadingState, setCoinDialogLoadingState] = useRecoilState(loadingAddCoinDialog);
     const { mutation } = coinListItemGroupHook();
+    let timer:null | NodeJS.Timeout = null;
+
+    const setListItemFilterInput = useSetRecoilState(coinListFilterInput)
+
+    const changeListItemFilterInput = (e: React.FormEvent<HTMLInputElement>) => {
+        let eventTarget = e;
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(function() {
+            setListItemFilterInput(eventTarget.target.value);
+        }, 300);
+    }
     
     const [modalValues, setModalValues] = useState<TaddWalletItem>({
         ticker: '',
@@ -60,14 +76,27 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
             ...modalValues,
             [e.currentTarget.name]: value
         });
-        console.log(value)
     }
 
     return (
-        <>
-            <div>
+        <S.Wrap>
+            <Input
+                type="text"
+                onChange={changeListItemFilterInput}
+                placeholder="INSERT TICKER"
+                css={
+                    {
+                        'padding': '10px',
+                        'margin-bottom': '1.5rem',
+                        'border': '1px solid rgb(236, 239, 241)',
+                        'font-size': '1rem',
+                        'background': '#fff'
+                    }
+                }
+            />
+            <S.CoinListGroupWrap>
                 {children}
-            </div>
+            </S.CoinListGroupWrap>
             <Modal modalConfirmAction={modalConfirmAction} changeDialogState={changeDialogState} visible={coinDialogState.state} hasBottomBtn={true} hasTitle={coinDialogState.ticker} btnLoading={coinDialogLoadingState.loading}>
                 <div>
                     <Label>
@@ -96,7 +125,7 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
                     </Label>
                 </div>
             </Modal>
-        </>
+        </S.Wrap>
         
     )
 }
