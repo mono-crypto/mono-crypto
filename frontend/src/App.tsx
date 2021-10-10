@@ -4,7 +4,9 @@ import React from 'react'
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
+// Page and Menu
 import Wallet from '@/pages/Wallet'
+import TopBar from '@/components/common/TopBar'
 
 // router
 import {
@@ -13,6 +15,7 @@ import {
 } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import {
   RecoilRoot
@@ -57,11 +60,13 @@ const App: React.FC = () => {
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
+        <TopBar/>
         <Switch>
           <Route path="/">
             <Wallet />
           </Route>
         </Switch>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </RecoilRoot>
   )
