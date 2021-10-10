@@ -23,4 +23,5 @@ export const Input = styled.input.attrs(props => ({
     &:focus {
         border-color: #409eff;
     }
+    ${props => props.css}
 `

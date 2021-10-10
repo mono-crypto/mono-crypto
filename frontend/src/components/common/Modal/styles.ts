@@ -4,6 +4,7 @@ export const Dimm = styled.div`
     position: fixed;
     top: 0;
     bottom: 0;
+    left: 0;
     display: inline-block;
     width: 100%;
     height: 100vh;
@@ -32,11 +33,15 @@ export const Content = styled.div`
 export const BottomButtons = styled.div`
     display: flex;
     margin-top: 20px;
+
+    button ~ button {
+        margin-left: 1rem;
+    }
 `
 
 export const Title = styled.div`
     display: block;
     margin-bottom: 20px;
+    font-weight: bold;
     font-size: 20px;
-
 `

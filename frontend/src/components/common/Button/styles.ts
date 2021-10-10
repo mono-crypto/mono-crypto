@@ -15,4 +15,6 @@ export const Button = styled.button`
     &:active {
         background-color: #409eff;
     }
+
+    ${props => props.css}
 `
