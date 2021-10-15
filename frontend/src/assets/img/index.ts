@@ -1,0 +1,1 @@
+export { default as loginIcon } from './login-icon.svg'

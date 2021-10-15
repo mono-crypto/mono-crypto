@@ -17,9 +17,7 @@ import {
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-import {
-  RecoilRoot
-} from 'recoil';
+import checkUserHook from '@/hooks/checkUserHook'
 
 const GlobalStyle = createGlobalStyle`        
   ${reset} 
@@ -56,8 +54,9 @@ const GlobalStyle = createGlobalStyle`
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
+  // checkUserHook()
+
   return (
-    <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />
         <TopBar/>
@@ -68,7 +67,6 @@ const App: React.FC = () => {
         </Switch>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </RecoilRoot>
   )
 }
 

@@ -37,3 +37,10 @@ export type updateWalletItem = {
     price?: number
     date?: string
 }
+
+export type User = {
+    google_id: number
+    email: string
+    name: string
+    picture: string
+  }

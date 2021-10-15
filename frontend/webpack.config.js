@@ -30,6 +30,10 @@ module.exports = {
           target: 'es2015',
           tsconfigRaw: require('./tsconfig.json')
         }
+      },
+      {
+        test: /\.svg/,
+        type: 'asset/inline'
       }
     ]
   },
