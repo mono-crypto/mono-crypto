@@ -8,6 +8,7 @@ import { WalletModule } from './wallet/wallet.module';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { ConfigModule } from '@nestjs/config';
 import { ExchangeInfoModule } from './exchange-info/exchange-info.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ExchangeInfoModule } from './exchange-info/exchange-info.module';
     WalletModule,
     SchedulerModule,
     ExchangeInfoModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
