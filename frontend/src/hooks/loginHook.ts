@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { googleAccessTokenState, authState } from '@/atoms/authState';
@@ -8,6 +9,7 @@ import authStorage from '@/lib/storage/authStorage'
 export default function loginHook() {
     const [, setGoogleAccessToken] = useRecoilState(googleAccessTokenState)
     const [user, setAuthState] = useRecoilState(authState)
+    const [userInfoModal, setUserInfoModal] = useState(false)
 
     const login = async(googleAccessToken:string) => {
         try {
@@ -29,6 +31,8 @@ export default function loginHook() {
     return {
         'login': login,
         'logout' : logout,
+        userInfoModal: userInfoModal,
+        setUserInfoModal: setUserInfoModal,
         user: user
     }
 }
