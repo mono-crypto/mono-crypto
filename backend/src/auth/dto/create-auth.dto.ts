@@ -1,5 +1,6 @@
 export class CreateAuthDto {
-  google: {
-    access_token: string;
-  };
+  google_id: string;
+  email: string;
+  name: string;
+  picture: string;
 }

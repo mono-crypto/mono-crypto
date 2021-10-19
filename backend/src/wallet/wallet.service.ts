@@ -19,8 +19,15 @@ export class WalletService {
     return createdWalletItem.save();
   }
 
-  async findAll(): Promise<Wallet[]> {
-    return this.walletModel.find().exec();
+  async findUserWalletList(id: number): Promise<Wallet[]> {
+    return this.walletModel.find(
+      {
+        'user.google_id': Number(id),
+      },
+      (err, res) => {
+        console.log(err, res);
+      },
+    );
   }
 
   findOne(id: number) {

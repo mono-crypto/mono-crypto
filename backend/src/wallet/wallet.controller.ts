@@ -4,7 +4,7 @@ import {
   Post,
   Body,
   Patch,
-  Param,
+  Query,
   Delete,
 } from '@nestjs/common';
 import { WalletService } from './wallet.service';
@@ -22,13 +22,8 @@ export class WalletController {
   }
 
   @Get()
-  findAll() {
-    return this.walletService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.walletService.findOne(+id);
+  findUserWalletList(@Query('id') id: number) {
+    return this.walletService.findUserWalletList(id);
   }
 
   @Patch()

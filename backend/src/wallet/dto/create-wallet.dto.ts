@@ -1,4 +1,5 @@
 import { Transform } from 'class-transformer';
+import { CreateAuthDto } from 'src/auth/dto/create-auth.dto';
 
 export class CreateWalletDto {
   @Transform(({ value }) => value.toUpperCase())
@@ -9,4 +10,5 @@ export class CreateWalletDto {
   ea: number;
   date: Date;
   convertPrice: number;
+  user: CreateAuthDto;
 }
