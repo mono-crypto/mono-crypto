@@ -3,8 +3,11 @@ import * as S from './styles'
 
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import loginHook from '@/hooks/loginHook'
+import { useRecoilState } from 'recoil';
+import { authState } from '@/atoms/authState';
 
 function Login() {
+    console.log('Login component')
     const { login, logout, userInfoModal, setUserInfoModal, user } = loginHook();
 
     const userInfoToggle = () => {
@@ -12,15 +15,13 @@ function Login() {
     }
 
     const responseGoogle = async(response) => {
-        const loginResult = await login(response.tokenId)
+        await login(response.tokenId)
         setUserInfoModal(false)
-        console.log('login: ', response);
     }
 
     const responseLogoutGoogle = () => {
-        const logoutResult = logout()
+        logout()
         setUserInfoModal(false)
-        console.log('Logout: ')
     }
 
     return(
@@ -31,7 +32,7 @@ function Login() {
                     <S.LoginIcon width={'2rem'} height={'2rem'} borderRadius={'2rem'} backgroundImage={user.picture}/>
                 </S.CustomButton>
                 
-                <S.UserInfo display={userInfoModal} width={'20rem'}>
+                <S.UserInfo display={userInfoModal ? 1 : 0} width={'20rem'}>
                     <div className="title">
                         <div className="title_picture">
                             <img src={user.picture}/>

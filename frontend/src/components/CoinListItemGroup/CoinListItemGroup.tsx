@@ -22,7 +22,7 @@ interface CoinListItemGroupProps {
 function CoinListItemGroup({children}: CoinListItemGroupProps) {
     const [coinDialogState, setCoinDialogState] = useRecoilState(addCoinDialogState);
     const [coinDialogLoadingState, setCoinDialogLoadingState] = useRecoilState(loadingAddCoinDialog);
-    const { mutation } = coinListItemGroupHook();
+    const { mutation, user } = coinListItemGroupHook();
     let timer:null | NodeJS.Timeout = null;
 
     const setListItemFilterInput = useSetRecoilState(coinListFilterInput)
@@ -60,6 +60,7 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
             await mutation.mutate({
                 ...modalValues,
                 'ticker': coinDialogState.ticker,
+                'user': user
             })
         } catch(e) {
             console.log(e);

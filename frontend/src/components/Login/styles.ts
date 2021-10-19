@@ -1,8 +1,20 @@
-import styled from 'styled-components'
+import styled, { CSSObject } from 'styled-components'
 import { loginIcon } from '../../assets/img'
 import { closeIcon } from '../../assets/img'
 
-export const LoginIcon = styled.span`
+export interface ILoginIcon {
+    width?: string;
+    height?: string;
+    borderRadius?: string;
+    backgroundImage?: string;
+}
+
+export interface IUserInfo {
+    width?: string;
+    display?: number;
+}
+
+export const LoginIcon = styled.span<ILoginIcon>`
     display: inline-block;
     width: ${props => props.width};
     height: ${props => props.height};
@@ -15,7 +27,7 @@ export const CustomButton = styled.button`
     border: 0;
 `
 
-export const UserInfo = styled.div`
+export const UserInfo = styled.div<IUserInfo>`
     position: absolute;
     top: 3.8rem;
     right: 0.5rem;

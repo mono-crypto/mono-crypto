@@ -8,6 +8,7 @@ import { useWalletListQuery } from '@/hooks/query/useWalletListQuery';
 import { exchangeInfo } from '@/atoms/exchangeInfo'
 import { walletItemList } from '@/atoms/walletListState'
 import { cryptoPriceState } from '@/atoms/cryptoPriceState';
+import { authState } from '@/atoms/authState';
 
 import { ICryptoMarketPrices } from '@/components/WalletRealTime/WalletRealTime';
 
@@ -17,10 +18,11 @@ export function walletRealTimeHook() {
 
     const [exchangInfoData, setExchangeInfo] = useRecoilState(exchangeInfo)
     const [walletItemListData, setWalletItemListData] = useRecoilState(walletItemList)
-    const [cryptoMarketPricesData, setCryptoMarketPricesData] = useRecoilState(cryptoPriceState)
+    const [, setCryptoMarketPricesData] = useRecoilState(cryptoPriceState)
+    const [user] = useRecoilState(authState)
 
     const {isLoading:allExchangeInfoLoading, data:allExchangeInfoData, error:allExchangeInfoError} = useExchangeInfoQuery();
-    const {isLoading:walletListLoading, data:walletListData, error:walletListError} = useWalletListQuery();
+    const {isLoading:walletListLoading, data:walletListData, error:walletListError} = useWalletListQuery(user?.google_id);
 
     const {
       sendMessage,

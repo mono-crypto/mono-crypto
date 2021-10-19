@@ -1,10 +1,14 @@
+import { useRecoilState } from 'recoil'
+import { authState } from '@/atoms/authState'
 import { useMutation, useQueryClient } from 'react-query'
 import { addWalletList as AaddWalletItem } from '@/lib/api/wallet/addWalletList'
 import { addWalletItem as TaddWalletItem } from '@/lib/api/types'
 
 export function coinListItemGroupHook() {
+    const [user] = useRecoilState(authState)
     const queryClient = useQueryClient() 
-    const mutation = useMutation((addWalletItemData:TaddWalletItem) => AaddWalletItem(addWalletItemData), {
+
+    const mutation = useMutation((addWalletItemData:TaddWalletItem) => (AaddWalletItem(addWalletItemData)), {
         onSuccess: () => {
             queryClient.invalidateQueries('walletList')
         }
@@ -12,5 +16,6 @@ export function coinListItemGroupHook() {
 
     return {
         mutation: mutation,
+        user: user
     }
 }
