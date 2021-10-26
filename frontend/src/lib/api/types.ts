@@ -18,14 +18,14 @@ export type WalletItem = {
 }
 
 export type addWalletItem = {
-    ticker?: string
+    ticker: string
     market: string
-    price: number
-    ea: number,
+    price: number | string
+    ea: number | string
     date: string
-    convertPrice: number,
-    user?: User | null,
-    loading?: boolean,
+    convertPrice?: number
+    user: User | null
+    loading?: boolean
 }
 
 export type deleteWalletItem = {

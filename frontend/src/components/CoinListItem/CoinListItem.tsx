@@ -2,31 +2,33 @@ import React from 'react'
 
 import * as S from './styles'
 
-import { useRecoilState } from 'recoil'
-import { addCoinDialogState } from '@/atoms/addCoinDialog'
+import { useAddCoinModalStateSelector } from '@/atoms/addCoinDialog'
 
+import { CoinListItem as TCoinListItem } from '@/lib/api/types'
 
 interface WalletItemProps {
-    data: string
+    data: TCoinListItem
     key: number
 }
 
 export default function CoinListItem(props:WalletItemProps) {
-    const [coinDialogState, setCoinDialogState] = useRecoilState(addCoinDialogState);
-
-    const changeDialogState = () => {
-        setCoinDialogState({
-            'ticker': props.data,
-            'state': !coinDialogState.state
+    const [dialogState, setDialogState] = useAddCoinModalStateSelector();
+    const openDialog = () => {
+        setDialogState({
+            ...dialogState,
+            ticker: props.data.name,
+            visible: true
         })
+        console.log('open dialog state: ', dialogState)
+
     }
 
     return(
         <S.CoinListItem>
             <S.Title>
-                {props.data}
+                {props.data.name}
             </S.Title>
-            <S.Button onClick={changeDialogState}>
+            <S.Button onClick={openDialog}>
                 추가하기
             </S.Button>
         </S.CoinListItem>

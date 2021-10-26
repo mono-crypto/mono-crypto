@@ -46,7 +46,7 @@ function WalletSummary({...props}: WalletSummaryProps) {
               Number(Math.round(summaryData.convertPrice * parseInt(props.exchangeInfo)) - summaryData.totalPurchaseAmount) < 0 ?"#0e52cf" : undefined
           )
         }>
-          {((Math.round(summaryData.convertPrice * parseInt(props.exchangeInfo)) / summaryData.totalPurchaseAmount) * 100 - 100).toFixed(2)} %
+          {isNaN(((Math.round(summaryData.convertPrice * parseInt(props.exchangeInfo)) / summaryData.totalPurchaseAmount) * 100 - 100)) ? 0 : ((Math.round(summaryData.convertPrice * parseInt(props.exchangeInfo)) / summaryData.totalPurchaseAmount) * 100 - 100).toFixed(2)} %
         </S.RevenueContentDescription>
       </S.RevenueContent>
     </S.WalletSummary>

@@ -1,82 +1,42 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import Input from '@/components/common/Input'
-import Label from '@/components/common/Label'
-import Modal from '@/components/common/Modal'
 
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import { addCoinDialogState, loadingAddCoinDialog } from '@/atoms/addCoinDialog'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { addWalletItem as TaddWalletItem } from '@/lib/api/types'
+import { coinListFilterInput, coinListFilter } from '@/atoms/coinListState'
 
-import { coinListItemGroupHook } from '@/hooks/coinListItemGroup'
-
-import { coinListFilterInput } from '@/atoms/coinListState'
+import { CoinListItem as TCoinListItem } from '@/lib/api/types'
 
 import * as S from './styles'
 
-interface CoinListItemGroupProps {
-    children: React.ReactNode
-}
+import CoinListItem from '../CoinListItem'
+import CoinListModal from '../CoinListModal'
 
-function CoinListItemGroup({children}: CoinListItemGroupProps) {
-    const [coinDialogState, setCoinDialogState] = useRecoilState(addCoinDialogState);
-    const [coinDialogLoadingState, setCoinDialogLoadingState] = useRecoilState(loadingAddCoinDialog);
-    const { mutation, user } = coinListItemGroupHook();
+function CoinListItemGroup() {
+    console.log('CoinListItemGroup')
+    const [, setListItemFilterInput] = useRecoilState(coinListFilterInput)
+    const filteringList = useRecoilValue(coinListFilter)
+
     let timer:null | NodeJS.Timeout = null;
 
-    const setListItemFilterInput = useSetRecoilState(coinListFilterInput)
+    const mapToCoinListItem = (data:TCoinListItem[]) => {
+        return (
+            <S.CoinListGroupWrap>
+                { data.map((item,index) => (<CoinListItem key={index} data={item} />))}
+            </S.CoinListGroupWrap>
+        )
+    }
 
     const changeListItemFilterInput = (e: React.FormEvent<HTMLInputElement>) => {
         let eventTarget = e;
+
         if (timer) {
             clearTimeout(timer);
         }
         timer = setTimeout(function() {
             setListItemFilterInput(eventTarget.target.value);
         }, 300);
-    }
-    
-    const [modalValues, setModalValues] = useState<TaddWalletItem>({
-        ticker: '',
-        market: '',
-        price: 0,
-        ea: 0,
-        date: '',
-        convertPrice: 0
-    });
-
-    const changeDialogState = () => {
-        setCoinDialogState({
-            'state': !coinDialogState.state
-        })
-    }
-    
-    const modalConfirmAction = async() => {
-        setCoinDialogLoadingState({
-            loading: true
-        });
-        try {
-            await mutation.mutate({
-                ...modalValues,
-                'ticker': coinDialogState.ticker,
-                'user': user
-            })
-        } catch(e) {
-            console.log(e);
-        }
-        setCoinDialogLoadingState({
-            loading: false
-        });
-        changeDialogState();
-    }
-
-    const onChangeModalInput = (e:React.FormEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value;
-        setModalValues({
-            ...modalValues,
-            [e.currentTarget.name]: value
-        });
     }
 
     return (
@@ -95,37 +55,8 @@ function CoinListItemGroup({children}: CoinListItemGroupProps) {
                     }
                 }
             />
-            <S.CoinListGroupWrap>
-                {children}
-            </S.CoinListGroupWrap>
-            <Modal modalConfirmAction={modalConfirmAction} changeDialogState={changeDialogState} visible={coinDialogState.state} hasBottomBtn={true} hasTitle={coinDialogState.ticker} btnLoading={coinDialogLoadingState.loading}>
-                <div>
-                    <Label>
-                        <span>마켓</span>
-                        <div>
-                            <Input type="text" name="market" onChange={onChangeModalInput} value={modalValues.market}/>
-                        </div>
-                    </Label>
-                </div>
-                <div>
-                    <Label>
-                        <span>코인당 가격</span>
-                        <Input type="number" name="price" onChange={onChangeModalInput} value={modalValues.price}/>
-                    </Label>
-                </div>
-                <div>
-                    <Label>
-                        <span>수량</span>
-                        <Input type={"number"} name={"ea"} onChange={onChangeModalInput} value={modalValues.ea}/>
-                    </Label>
-                </div>
-                <div>
-                    <Label>
-                        <span>날짜</span>
-                        <Input type={"text"} name={"date"} onChange={onChangeModalInput} value={modalValues.date}/>
-                    </Label>
-                </div>
-            </Modal>
+            {mapToCoinListItem(filteringList)}
+            <CoinListModal />
         </S.Wrap>
         
     )

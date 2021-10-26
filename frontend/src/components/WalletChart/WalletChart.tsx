@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import * as echarts from 'echarts/core'
@@ -7,11 +7,9 @@ import { PieChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 
 import { useRecoilState } from 'recoil'
-import { cryptoPriceState, ICryptoMarketPrices } from '@/atoms/cryptoPriceState'
 
 import styled from 'styled-components'
 import { walletItemList } from '@/atoms/walletListState'
-import { exchangeInfo } from '@/atoms/exchangeInfo'
 
 const ButtonWrap = styled.div`
   display: flex;
@@ -21,16 +19,17 @@ const ButtonWrap = styled.div`
 echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer])
 
 function WalletChart() {
-  const [walletItemListData] = useRecoilState(walletItemList)
+  console.log('Walletchart')
+  const [walletItemListData,] = useRecoilState(walletItemList)
   
   const [chartFlag, setChartFlag] = useState(true)
   const changeChartMode = () => {
     setChartFlag(!chartFlag)
   }
   const chartData = () => {
-    return walletItemListData.map(item => {
+    return walletItemListData ? walletItemListData.map(item => {
       return { value: item.ea, name: item.ticker}
-    })
+    }) : []
   }
 
   let option = {
@@ -108,30 +107,37 @@ function WalletChart() {
     ]
   }
 
-  return (
-    <>
-      <ButtonWrap>
-        <button onClick={changeChartMode}>
-          {chartFlag === true ? '자산비중으로 보기' : '보유비중으로 보기'}
-        </button>
-      </ButtonWrap>
-      {
-        chartFlag ?
-        <ReactEChartsCore
-          echarts={echarts}
-          option={option}
-          notMerge={true}
-          lazyUpdate={true}
-        /> :
-        <ReactEChartsCore
-          echarts={echarts}
-          option={assetOption}
-          notMerge={true}
-          lazyUpdate={true}
-        />
-      }
-    </>
-  )
+  if(walletItemListData.length > 0) {
+    return (
+      <>
+        <ButtonWrap>
+          <button onClick={changeChartMode}>
+            {chartFlag === true ? '자산비중으로 보기' : '보유비중으로 보기'}
+          </button>
+        </ButtonWrap>
+        {
+          chartFlag ?
+          <ReactEChartsCore
+            echarts={echarts}
+            option={option}
+            notMerge={true}
+            lazyUpdate={true}
+          /> :
+          <ReactEChartsCore
+            echarts={echarts}
+            option={assetOption}
+            notMerge={true}
+            lazyUpdate={true}
+          />
+        }
+      </>
+    )
+  } else {
+    return (
+      <>
+      </>
+    )
+  }
 }
 
 export default WalletChart

@@ -30,7 +30,6 @@ export default function loginHook() {
         } catch (e) {
         }
     }, []);
-    
 
     const logout = useCallback(() => {
         setGoogleAccessToken(null)
@@ -46,8 +45,8 @@ export default function loginHook() {
     }, [walletItems])
 
     return {
-        'login': login,
-        'logout' : logout,
+        login: login,
+        logout : logout,
         userInfoModal: userInfoModal,
         setUserInfoModal: setUserInfoModal,
         user: user,

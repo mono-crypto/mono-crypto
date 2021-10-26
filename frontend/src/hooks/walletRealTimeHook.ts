@@ -1,34 +1,29 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import useWebSocket from 'react-use-websocket'
 
 import { useExchangeInfoQuery } from '@/hooks/query/useExchangeInfoQuery'
-import { useWalletListQuery } from '@/hooks/query/useWalletListQuery';
 
 import { exchangeInfo } from '@/atoms/exchangeInfo'
 import { walletItemList } from '@/atoms/walletListState'
 import { cryptoPriceState } from '@/atoms/cryptoPriceState';
-import { authState } from '@/atoms/authState';
 
 import { ICryptoMarketPrices } from '@/components/WalletRealTime/WalletRealTime';
+import { getSocketURL } from '@/atoms/socketState';
 
 export function walletRealTimeHook() {
-    const defaultSocketUrl = 'wss://stream.binance.com:9443/ws/btcusdt@miniTicker'
-    const [socketUrl, setSocketUrl] = useState(defaultSocketUrl);
-
     const [exchangInfoData, setExchangeInfo] = useRecoilState(exchangeInfo)
-    const [walletItemListData, setWalletItemListData] = useRecoilState(walletItemList)
+    const [walletItemListData] = useRecoilState(walletItemList)
     const [, setCryptoMarketPricesData] = useRecoilState(cryptoPriceState)
-    const [user] = useRecoilState(authState)
+    const [socketURLValue] = useRecoilState(getSocketURL);
 
     const {isLoading:allExchangeInfoLoading, data:allExchangeInfoData, error:allExchangeInfoError} = useExchangeInfoQuery();
-    const {isLoading:walletListLoading, data:walletListData, error:walletListError} = useWalletListQuery(user?.google_id);
 
     const {
       sendMessage,
       lastMessage,
       readyState,
-    } = useWebSocket(socketUrl);
+    } = useWebSocket(socketURLValue);
     
     const cryptoMarketPrices = useRef<ICryptoMarketPrices>({})
     cryptoMarketPrices.current = useMemo(() => {
@@ -48,32 +43,10 @@ export function walletRealTimeHook() {
     }, [lastMessage])
 
     useEffect(() => {
-        console.log('walletRealTimeHook useEffect ExchangeInfo')
         if (allExchangeInfoData) {
             setExchangeInfo(allExchangeInfoData)
         }
     }, [allExchangeInfoData])
-
-    useEffect(() => {
-        console.log('walletRealTimeHook useEffect walletItemListData')
-        if (walletListData) {
-            let summaryValue = 0
-            const additionalUrlTicker = walletListData.reduce((acc, currentValue) => {
-                return acc + "/" + (currentValue.ticker.toLowerCase() + currentValue.market.toLowerCase()) + "@miniTicker"
-            }, "")
-
-            setSocketUrl(defaultSocketUrl+additionalUrlTicker)
-            setWalletItemListData(walletListData)
-            // summaryValue
-        }
-    }, [walletListData])
-
-    useEffect(() => {
-        console.log('walletRealTimeHook useEffect websocket')
-        if (walletListData) {
-            setWalletItemListData(walletListData)
-        }
-    }, [walletListData])
 
     return {
         exchangeInfoData: exchangInfoData || allExchangeInfoData,

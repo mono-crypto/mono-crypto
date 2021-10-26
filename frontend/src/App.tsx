@@ -54,8 +54,7 @@ const GlobalStyle = createGlobalStyle`
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
-  // checkUserHook()
-
+  console.log('app...')
   return (
       <QueryClientProvider client={queryClient}>
         <GlobalStyle />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import WalletSummary from '@/components/WalletSummary'
 import WalletItemGroup from '@/components/WalletItemGroup'
@@ -16,14 +16,16 @@ export interface ICryptoMarketPrices {
 
 function WalletRealTime() {
   const { exchangeInfoData, walletItemListData, cryptoMarketPrices } = walletRealTimeHook();
-  const exchangeInfoAboutDollar = (data:Array<any>) => {
-    if(data) {
-      let USDDataArray = data[0].data.filter( (item: { cur_unit: string }) => item.cur_unit == "USD" )
-      return USDDataArray[0].bkpr.replaceAll(/\,/g, '')
-    }
-  }
+  const exchangeInfoAboutDollar = useCallback(
+    (data:Array<any>) => {
+      if(data) {
+        let USDDataArray = data[0].data.filter( (item: { cur_unit: string }) => item.cur_unit == "USD" )
+        return USDDataArray[0].bkpr.replaceAll(/\,/g, '')
+      }
+    }, [])
+  
 
-  const mapToWalletItem = () => {
+  const mapToWalletItem = useCallback(() => {
     return walletItemListData.map((data, index) => 
       <WalletItem
         data={data}
@@ -31,7 +33,7 @@ function WalletRealTime() {
         valuationAmount={(exchangeInfoData ? (cryptoMarketPrices.current[(data.ticker+data.market).toUpperCase()]?.binance.price * data.ea)*exchangeInfoAboutDollar(exchangeInfoData) : 0)
       }/>
     )
-  }
+  }, [walletItemListData])
 
   return (
       <>
