@@ -13,16 +13,16 @@ export class Wallet {
   @Prop({ required: true })
   market: string;
 
-  @Prop({ required: true })
-  ea: number;
+  @Prop({ type: Number || String, required: true })
+  ea: number | string;
 
-  @Prop({ required: true })
-  price: number;
+  @Prop({ type: Number || String, required: true })
+  price: number | string;
 
   @Prop({ required: true })
   date: Date;
 
-  @Prop({ required: true })
+  @Prop()
   convertPrice: number;
 
   @Prop({ required: true, type: User })

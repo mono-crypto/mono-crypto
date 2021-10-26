@@ -6,9 +6,11 @@ export class CreateWalletDto {
   ticker: string;
   @Transform(({ value }) => value.toUpperCase())
   market: string;
-  price: number;
-  ea: number;
+  @Transform(({ value }) => parseInt(value.replace(new RegExp(',', 'g'), '')))
+  price: number | string;
+  @Transform(({ value }) => parseInt(value.replace(new RegExp(',', 'g'), '')))
+  ea: number | string;
   date: Date;
-  convertPrice: number;
+  convertPrice?: number;
   user: CreateAuthDto;
 }
