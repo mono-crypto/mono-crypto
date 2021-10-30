@@ -22,6 +22,16 @@ interface IwallItemDataForJSX {
     unit: String;
 }
 
+const ButtonCSS = {
+    'padding': '0.5rem 0',
+    'font-size': '1rem'
+    // 'box-shadow': '0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%)'
+}
+
+const ButtonHoverCSS = {
+    'background-color': 'rgb(0 0 0 / 20%)'
+}
+
 function WalletItem({data, valuationAmount}:WalletItemProps) {
     const [flipFalg, setFlipFlag] = useState(true);
     const { deleteWalletItemMutation, updateWalletDialogDisplay, setUpdateWalletDialogState, setUpdateWalletDialogDisplay } = walletItemHook();
@@ -123,23 +133,19 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
                         {data.ticker}
                     </S.TitleTrans>
                 </S.Title>
-                <S.filpTrigger onClick={changeFlipFalg} flipFlag={flipFalg}/>
+                <S.filpTrigger onClick={changeFlipFalg} flip={flipFalg}/>
             </S.Header>
             <S.ContentWrap>
                 <S.Content>
                     {contentDataJSX(contentData)}
                 </S.Content>
-                <S.Detail detailFlip={flipFalg} >
+                <S.Detail flip={flipFalg} >
                     {detailDataJSX(detailData)}
                 </S.Detail>
             </S.ContentWrap>
             <S.EditButtons>
-                <Button onClick={deleteWalletItem} css={
-                    {
-                        'padding': '0.3rem 0',
-                    }
-                }>삭제</Button>
-                <Button onClick={changeDialogState}>수정</Button>
+                <Button onClick={deleteWalletItem} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>삭제</Button>
+                <Button onClick={changeDialogState} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>수정</Button>
             </S.EditButtons>
         </S.WalletItem>
     )
