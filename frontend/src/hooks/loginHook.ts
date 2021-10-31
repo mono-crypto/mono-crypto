@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { googleAccessTokenState, authState } from '@/atoms/authState';
@@ -11,7 +11,6 @@ import { useWalletListQuery } from '@/hooks/query/useWalletListQuery';
 import { walletItemList } from '@/atoms/walletListState';
  
 export default function loginHook() {
-    const queryClient = useQueryClient()
     
     const [userInfoModal, setUserInfoModal] = useState(false)
     const [, setGoogleAccessToken] = useRecoilState(googleAccessTokenState)
@@ -20,7 +19,7 @@ export default function loginHook() {
 
     const { data: walletItems } = useWalletListQuery(user?.google_id, user)
 
-    const login = useCallback(async(googleAccessToken:string) => {
+    const login = async(googleAccessToken:string) => {
         try {
             const authData = await AgetAuth(googleAccessToken)
             if(authData) {
@@ -29,14 +28,15 @@ export default function loginHook() {
             }
         } catch (e) {
         }
-    }, []);
+    }
 
-    const logout = useCallback(() => {
+    const logout = () => {
+        const queryClient = useQueryClient()
         setGoogleAccessToken(null)
         setAuthState(null)
         authStorage.clean()
         queryClient.removeQueries(['walletList'])
-    }, [])
+    }
 
     useEffect(()=> {
         if(walletItems) {

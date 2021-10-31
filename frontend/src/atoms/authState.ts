@@ -17,6 +17,6 @@ export function getAuthState() {
   return useRecoilValue(authState)
 }
 
-export function setAuthState() {
+export function useAuthState() {
   return useRecoilState(authState)
 }

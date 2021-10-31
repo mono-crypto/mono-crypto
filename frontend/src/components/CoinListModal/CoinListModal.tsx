@@ -8,14 +8,22 @@ import Select from '@/components/common/Select'
 import { coinListModalHook } from '@/hooks/coinListModalHook'
 import { useAddCoinModalVisibleState, useAddCoinModalLoadingState, useAddCoinModalStateSelector, useCoinMarketList } from '@/atoms/addCoinDialog'
 
+const inputCSS = {
+    padding: '0.4rem 0.8rem',
+}
+const buttonCSS = {
+    padding: '0.3rem 0'
+}
+
 export function coinListModal() {
+    console.log('coinListModal')
     const { mutation, user } = coinListModalHook()
     const [, setDialogLoadingState] = useAddCoinModalLoadingState()
     const [dialogVisibleState, setDialogVisibleState] = useAddCoinModalVisibleState()
     const [dialogValue, setDialogValue] = useAddCoinModalStateSelector()
     const coinMarketList = useCoinMarketList();
 
-    const modalConfirmAction = async() => {
+    const modalConfirmAction = useCallback(async() => {
         setDialogLoadingState(true);
         try {
             await mutation.mutate({
@@ -27,7 +35,8 @@ export function coinListModal() {
         }
         setDialogLoadingState(false);
         changeDialogState();
-    }
+    }, [dialogValue, user])
+    
 
     const onChangeModalInput = useCallback((e:React.FormEvent<HTMLInputElement>, type:string) => {
         let value:any = e.currentTarget.value;
@@ -56,36 +65,44 @@ export function coinListModal() {
         });
     }
 
-    const changeDialogState = () => {
+    const changeDialogState = useCallback(() => {
         setDialogVisibleState(!dialogVisibleState)
-    }
+    }, [dialogVisibleState])
     
     return(
-        <Modal modalConfirmAction={modalConfirmAction} changeDialogState={changeDialogState} visible={dialogValue.visible} hasBottomBtn={true} hasTitle={dialogValue.ticker} btnLoading={dialogValue.loading}>
+        <Modal
+            modalConfirmAction={modalConfirmAction}
+            changeDialogState={changeDialogState}
+            visible={dialogValue.visible}
+            hasBottomBtn={true}
+            hasTitle={dialogValue.ticker}
+            btnLoading={dialogValue.loading}
+            buttonCSS={buttonCSS}
+        >
             <div>
                 <Label>
                     <span>마켓</span>
                     <div>
-                        <Select options={coinMarketList} name="market" onChange={onChangeModalSelect}/>
+                        <Select css={inputCSS} options={coinMarketList} name="market" onChange={onChangeModalSelect}/>
                     </div>
                 </Label>
             </div>
             <div>
                 <Label>
                     <span>코인당 가격</span>
-                    <Input type="text" name="price" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.price}/>
+                    <Input css={inputCSS} type="text" name="price" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.price}/>
                 </Label>
             </div>
             <div>
                 <Label>
                     <span>수량</span>
-                    <Input type="text" name="ea" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.ea}/>
+                    <Input css={inputCSS} type="text" name="ea" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.ea}/>
                 </Label>
             </div>
             <div>
                 <Label>
                     <span>날짜</span>
-                    <Input type="text" name="date" onChange={(e) => onChangeModalInput(e, 'date')} value={dialogValue.date}/>
+                    <Input css={inputCSS} type="text" name="date" onChange={(e) => onChangeModalInput(e, 'date')} value={dialogValue.date}/>
                 </Label>
             </div>
         </Modal>

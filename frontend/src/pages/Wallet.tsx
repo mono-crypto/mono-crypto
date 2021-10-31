@@ -1,10 +1,9 @@
 import React from 'react'
 
 import WalletRealTime from '@/components/WalletRealTime'
-
 import WalletChart from '@/components/WalletChart'
-
 import CoinListItemGroup from '@/components/CoinListItemGroup'
+import WalletItemModal from '@/components/WalletItemModal'
 
 import styled from 'styled-components'
 
@@ -23,6 +22,7 @@ function Wallet() {
     <WalletWrap>
       <WalletChart/>
       <WalletRealTime />
+      <WalletItemModal />
       <CoinListItemGroupDiv>
         <CoinListItemGroup />
       </CoinListItemGroupDiv>

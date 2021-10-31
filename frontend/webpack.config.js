@@ -41,6 +41,7 @@ module.exports = {
     host: '0.0.0.0',
     port: 8080,
     historyApiFallback: true,
+    disableHostCheck: true,
     proxy: {
       '/api': {
         target: 'https://api.locals.mono-crypto.com:3001/',

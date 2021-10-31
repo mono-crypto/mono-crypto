@@ -25,7 +25,7 @@ function WalletRealTime() {
     }, [])
   
 
-  const mapToWalletItem = useCallback(() => {
+  const mapToWalletItem = () => {
     return walletItemListData.map((data, index) => 
       <WalletItem
         data={data}
@@ -33,7 +33,7 @@ function WalletRealTime() {
         valuationAmount={(exchangeInfoData ? (cryptoMarketPrices.current[(data.ticker+data.market).toUpperCase()]?.binance.price * data.ea)*exchangeInfoAboutDollar(exchangeInfoData) : 0)
       }/>
     )
-  }, [walletItemListData])
+  }
 
   return (
       <>

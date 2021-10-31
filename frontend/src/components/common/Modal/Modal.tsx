@@ -8,19 +8,21 @@ import { Interpolation } from 'styled-components'
 type ModalProps = {
     children: React.ReactNode
     changeDialogState: () => void
-    modalConfirmAction: () => void
     visible: boolean
     hasBottomBtn: boolean
+    modalConfirmAction?: () => void
     hasTitle?: string
     btnLoading?: boolean
     buttonCSS?: Interpolation<React.CSSProperties>
+    width?: string
+    maxWidth?: string
 }
 
 function Modal({...props}:ModalProps) {
-    if(!props.visible) return null
+    console.log('Modal')
     return(
-        <S.Dimm>
-            <S.Wrapper>
+        <S.Dimm visible={props.visible}>
+            <S.Wrapper visible={props.visible} width={props.width} maxWidth={props.maxWidth}>
                 {
                     props.hasTitle &&
                     <S.Title>{props.hasTitle}</S.Title>

@@ -9,7 +9,6 @@ interface CommonInputInterface extends React.InputHTMLAttributes<HTMLInputElemen
 }
 
 function Input({ onChange, ...rest }: CommonInputInterface) {
-
     return (
         <S.Input
             onChange={onChange}

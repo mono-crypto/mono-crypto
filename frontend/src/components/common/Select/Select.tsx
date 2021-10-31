@@ -10,7 +10,7 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
     options?: string[]
 }
 
-function Select({ css, options, ...rest }: SelectProps) {
+function Select({ options, ...rest }: SelectProps) {
     return(
         <S.Select {...rest}>
             <option value="" key={0}>-------</option>

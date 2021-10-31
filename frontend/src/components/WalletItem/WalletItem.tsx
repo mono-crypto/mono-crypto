@@ -144,8 +144,9 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
                 </S.Detail>
             </S.ContentWrap>
             <S.EditButtons>
-                <Button onClick={deleteWalletItem} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>삭제</Button>
-                <Button onClick={changeDialogState} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>수정</Button>
+                <Button onClick={changeDialogState} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>내역보기</Button>
+                {/* <Button onClick={deleteWalletItem} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>삭제</Button>
+                <Button onClick={changeDialogState} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>수정</Button> */}
             </S.EditButtons>
         </S.WalletItem>
     )

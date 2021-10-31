@@ -12,4 +12,6 @@ export const Select = styled.select`
     &:focus {
         border-color: #409eff;
     }
+    
+    ${props => props.css}
 `
