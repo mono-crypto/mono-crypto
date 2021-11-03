@@ -14,8 +14,9 @@ export const getSocketURL = selector<any>({
     key: 'getSocketURL',
     get: ({get}) => {
         const walletItems = get(walletItemList);
+        console.log(walletItems)
         const additionalUrlTicker = walletItems.reduce((acc, currentValue) => {
-            return acc + "/" + (currentValue.ticker.toLowerCase() + currentValue.market.toLowerCase()) + "@miniTicker"
+            return acc + "/" + (currentValue._id.toLowerCase() + currentValue.market.toLowerCase()) + "@miniTicker"
         }, "")
 
         return defaultSocketValue+additionalUrlTicker

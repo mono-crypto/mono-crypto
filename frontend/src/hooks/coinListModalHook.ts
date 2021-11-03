@@ -13,7 +13,6 @@ export function coinListModalHook() {
     
     const [user] = useRecoilState(authState)
     const [, setCoinList] = useConinList()
-    // const [inputValue, setInputValue, onChangeEvent] = useInputChangeHook()
     const {isLoading:coinIsLoading, data:coinData, error:coinDataError} = useCoinListQuery();
 
     const mutation = useMutation((addWalletItemData:TaddWalletItem) => (AaddWalletItem(addWalletItemData)), {

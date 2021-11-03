@@ -1,1 +1,1 @@
-export { default } from './WalletItemModal'
+export { default } from './WalletItemHistoryModal'

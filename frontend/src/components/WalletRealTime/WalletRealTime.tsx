@@ -16,6 +16,7 @@ export interface ICryptoMarketPrices {
 
 function WalletRealTime() {
   const { exchangeInfoData, walletItemListData, cryptoMarketPrices } = walletRealTimeHook();
+  
   const exchangeInfoAboutDollar = useCallback(
     (data:Array<any>) => {
       if(data) {

@@ -11,6 +11,7 @@ import { useWalletListQuery } from '@/hooks/query/useWalletListQuery';
 import { walletItemList } from '@/atoms/walletListState';
  
 export default function loginHook() {
+    const queryClient = useQueryClient()
     
     const [userInfoModal, setUserInfoModal] = useState(false)
     const [, setGoogleAccessToken] = useRecoilState(googleAccessTokenState)
@@ -31,7 +32,6 @@ export default function loginHook() {
     }
 
     const logout = () => {
-        const queryClient = useQueryClient()
         setGoogleAccessToken(null)
         setAuthState(null)
         authStorage.clean()

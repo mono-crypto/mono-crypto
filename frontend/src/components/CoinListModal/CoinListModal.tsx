@@ -90,7 +90,7 @@ export function coinListModal() {
             <div>
                 <Label>
                     <span>코인당 가격</span>
-                    <Input css={inputCSS} type="text" name="price" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.price}/>
+                    <Input css={inputCSS} type="text" name="price" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.price} placeholder="KRW단위"/>
                 </Label>
             </div>
             <div>
@@ -102,7 +102,7 @@ export function coinListModal() {
             <div>
                 <Label>
                     <span>날짜</span>
-                    <Input css={inputCSS} type="text" name="date" onChange={(e) => onChangeModalInput(e, 'date')} value={dialogValue.date}/>
+                    <Input css={inputCSS} type="date" name="date" onChange={(e) => onChangeModalInput(e, 'date')} value={dialogValue.date}/>
                 </Label>
             </div>
         </Modal>

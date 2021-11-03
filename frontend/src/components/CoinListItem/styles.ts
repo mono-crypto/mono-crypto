@@ -19,11 +19,3 @@ export const Title = styled.div`
     font-weight: bold;
     font-size: 22px;
 `
-
-export const Button = styled.button`
-    padding: 10px 20px;
-    line-height: 1;
-    border: 1px solid black;
-    border-radius: 4px;
-    appearance: none;
-`

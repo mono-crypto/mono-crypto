@@ -1,5 +1,5 @@
 import {
-    atom, DefaultValue, selector, useRecoilState, useRecoilValue,
+    atom, DefaultValue, selector, useRecoilState, useRecoilValue, useResetRecoilState,
   } from 'recoil'
 
 import { coinList } from '@/atoms/coinListState'
@@ -184,6 +184,10 @@ export function useAddCoinModalVisibleState() {
 
 export function useAddCoinModalLoadingState() {
   return useRecoilState(addCoinModalLoadingState)
+}
+
+export function useResetAddCoinModalState() {
+  return useResetRecoilState(addCoinModalState)
 }
 
 export function useCoinMarketList() {

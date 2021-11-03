@@ -14,7 +14,7 @@ function Login() {
     }, [userInfoModal])
 
     const loginGoogle = async(user) => {
-        await login(user.getAuthResponse().id_token)
+        await login(user.getAuthResponse(true).access_token)
         setUserInfoModal(false)
     }
 

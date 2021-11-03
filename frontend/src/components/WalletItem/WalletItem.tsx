@@ -6,10 +6,11 @@ import { WalletItem as TWalletItem } from '@/lib/api/types'
 
 import Button from '@/components/common/Button'
 import { walletItemHook } from '@/hooks/walletItemHook'
+import { useWalletItemHistory } from '@/hooks/query/useWalletItemHistory'
 
 
 interface WalletItemProps {
-    data: TWalletItem;
+    data: any;
     valuationAmount: number;
     deleteWalletItemFn?: () => void;
     updateWalletItemFn?: () => void;
@@ -33,8 +34,9 @@ const ButtonHoverCSS = {
 }
 
 function WalletItem({data, valuationAmount}:WalletItemProps) {
+    console.log('WalletItem:', data)
     const [flipFalg, setFlipFlag] = useState(true);
-    const { deleteWalletItemMutation, updateWalletDialogDisplay, setUpdateWalletDialogState, setUpdateWalletDialogDisplay } = walletItemHook();
+    const { updateWalletDialogDisplay, setUpdateWalletDialogDisplay, setHistoryTicker, deleteWalletItemMutation } = walletItemHook();
 
     const contentData = [
         {
@@ -52,7 +54,7 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
     const detailData = [
         {
             name: '매수평균가',
-            data: data.price.toLocaleString(),
+            data: data.total_price.toLocaleString(),
             unit: '원'
         },
         {
@@ -62,12 +64,12 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
         },
         {
             name: '매수금액',
-            data: (data.ea * data.price).toLocaleString(),
+            data: (data.total_ea * data.total_ea).toLocaleString(),
             unit: '원'
         },
         {
             name: '보유수량',
-            data: data.ea,
+            data: data.total_ea,
             unit: data.ticker
         }
     ]
@@ -103,24 +105,16 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
     const changeFlipFalg = () => {
         setFlipFlag(!flipFalg)
     }
-    const deleteWalletItem = () => {
-        deleteWalletItemMutation.mutate(data._id)
-        // 업데이트 필요
-    }
-
-    const changeDialogState = () => {
-        const date = new Date(data.date);
-        setUpdateWalletDialogState({
-            '_id': data._id,
-            'ticker': data.ticker.toUpperCase(),
-            'market': data.market.toUpperCase(),
-            'price' : data.price,
-            'ea' : data.ea,
-            'date': date.getFullYear().toString() + ((date.getMonth()+1).toString().length < 2 ? '0'+(date.getMonth()+1).toString() : (date.getMonth()+1).toString()) + ((date.getDate()).toString().length < 2 ? '0'+(date.getDate()).toString() : (date.getDate()).toString()),
-        })
+    const getAssetHistory = () => {
+        setHistoryTicker(data.ticker)
         setUpdateWalletDialogDisplay({
             'state': !updateWalletDialogDisplay.state
         })
+    }
+
+    const deleteWalletItem = () => {
+        deleteWalletItemMutation.mutate(data._id)
+        // 업데이트 필요
     }
 
     return(
@@ -144,7 +138,8 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
                 </S.Detail>
             </S.ContentWrap>
             <S.EditButtons>
-                <Button onClick={changeDialogState} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>내역보기</Button>
+                <Button onClick={deleteWalletItem} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>삭제</Button>
+                <Button onClick={getAssetHistory} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>내역보기</Button>
                 {/* <Button onClick={deleteWalletItem} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>삭제</Button>
                 <Button onClick={changeDialogState} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>수정</Button> */}
             </S.EditButtons>
