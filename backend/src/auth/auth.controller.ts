@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -25,13 +26,14 @@ export class AuthController {
   }
 
   @Post('/google/check')
-  checkRegister(@Body() Body: IgoogleLoginAuth) {
-    return this.authService.checkRegister(Body.access_token);
+  register(@Body() Body: IgoogleLoginAuth) {
+    return this.authService.register(Body.access_token);
   }
 
+  // test
   @Get()
-  findAll() {
-    return this.authService.findAll();
+  findAll(@Query('id') token) {
+    return this.authService.getAccessToeknInfo(token);
   }
 
   @Patch(':id')

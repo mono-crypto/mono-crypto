@@ -8,27 +8,44 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { Model } from 'mongoose';
 
+import { HttpService } from '@nestjs/axios';
+import { AxiosResponse } from 'axios';
+import { Observable } from 'rxjs';
+
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-  async getOAuthPayload(id_token) {
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private httpService: HttpService,
+  ) {}
+  async getAccessToeknInfo(access_token) {
     const CLIENT_ID =
       '916373523653-i8f4llc8qb74ktav55p5fc7vmvhgp8n7.apps.googleusercontent.com';
     const client = new OAuth2Client(CLIENT_ID);
 
-    const ticket = await client.verifyIdToken({
-      idToken: id_token,
-      audience: CLIENT_ID,
-      // Specify the CLIENT_ID of the app that accesses the backend
-      // Or, if multiple clients access the backend:
-      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-    });
-    const payload = ticket.getPayload();
+    // let tokenInfo = null;
+    const tokenInfo = client.getTokenInfo(access_token);
+    // try {
+    // } catch(e) {
+    //   console.log("invalid_token Error :", e)
+    //   return e
+    // }
 
-    return payload;
+    return tokenInfo;
   }
 
-  async findUser(id: number) {
+  getUserProfile(access_token: string): Observable<AxiosResponse<any>> {
+    return this.httpService.get(
+      'https://www.googleapis.com/oauth2/v3/userinfo',
+      {
+        params: {
+          access_token: access_token,
+        },
+      },
+    );
+  }
+
+  async findUser(id: User['google_id']) {
     return this.userModel
       .findOne({
         google_id: id,
@@ -40,17 +57,21 @@ export class AuthService {
     return 'This action adds a new auth';
   }
 
-  async checkRegister(id_token) {
-    const OAuthPayload = await this.getOAuthPayload(id_token).catch((e) => {
-      console.error;
-      return {};
-    });
+  async register(access_token) {
+    const accessToeknInfo = await this.getAccessToeknInfo(access_token).catch(
+      (e) => {
+        console.error;
+        return e;
+      },
+    );
 
-    const user = await this.findUser(OAuthPayload['sub']);
+    const userProfile = await this.getUserProfile(access_token).toPromise();
+    console.log(userProfile);
+    const user = await this.findUser(userProfile.data['sub']);
 
     let createUser = null;
     if (!user) {
-      createUser = await this.signIn(OAuthPayload);
+      createUser = await this.signIn(userProfile);
     }
 
     return user
@@ -63,12 +84,12 @@ export class AuthService {
       : false;
   }
 
-  async signIn(TokenPayload) {
+  async signIn(userProfile) {
     const user = new this.userModel({
-      google_id: TokenPayload.sub,
-      email: TokenPayload.email,
-      name: TokenPayload.name,
-      picture: TokenPayload.picture,
+      google_id: userProfile.sub,
+      email: userProfile.email,
+      name: userProfile.name,
+      picture: userProfile.picture,
     });
 
     return user.save();
