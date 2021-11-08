@@ -9,6 +9,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
 import { ConfigModule } from '@nestjs/config';
 import { ExchangeInfoModule } from './exchange-info/exchange-info.module';
 import { AuthModule } from './auth/auth.module';
+import { BinanceModule } from './binance/binance.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     SchedulerModule,
     ExchangeInfoModule,
     AuthModule,
+    BinanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
