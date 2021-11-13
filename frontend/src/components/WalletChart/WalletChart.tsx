@@ -19,7 +19,6 @@ const ButtonWrap = styled.div`
 echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer])
 
 function WalletChart() {
-  console.log('Walletchart')
   const [walletItemListData,] = useRecoilState(walletItemList)
   
   const [chartFlag, setChartFlag] = useState(true)

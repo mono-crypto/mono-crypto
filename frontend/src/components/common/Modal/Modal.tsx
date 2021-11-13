@@ -10,6 +10,7 @@ type ModalProps = {
     changeDialogState: () => void
     visible: boolean
     hasBottomBtn: boolean
+    hasCloseButton?: boolean
     modalConfirmAction?: () => void
     hasTitle?: string
     btnLoading?: boolean
@@ -36,6 +37,10 @@ function Modal({...props}:ModalProps) {
                         <Button onClick={props.changeDialogState} css={props.buttonCSS}>취소</Button>
                         <Button onClick={props.modalConfirmAction} css={props.buttonCSS}>확인</Button>
                     </S.BottomButtons>
+                }
+                {
+                    props.hasCloseButton &&
+                    <S.CloseButton>close</S.CloseButton>
                 }
             </S.Wrapper>
         </S.Dimm>

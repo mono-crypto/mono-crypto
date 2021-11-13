@@ -2,24 +2,24 @@ import React, { useState } from 'react'
 
 import * as S from './styles'
 
-import { WalletItem as TWalletItem } from '@/lib/api/types'
-
 import Button from '@/components/common/Button'
 import { walletItemHook } from '@/hooks/walletItemHook'
-import { useWalletItemHistory } from '@/hooks/query/useWalletItemHistory'
 
 
 interface WalletItemProps {
     data: any;
-    valuationAmount: number;
+    btcToUSDPrice: number;
+    exchangeInfo: number;
+    itemPrice: number;
     deleteWalletItemFn?: () => void;
     updateWalletItemFn?: () => void;
 }
 
 interface IwallItemDataForJSX {
     name: String;
-    data: number | String;
+    data: number;
     format?: String | null;
+    // ea: number;
     unit: String;
 }
 
@@ -33,43 +33,42 @@ const ButtonHoverCSS = {
     'background-color': 'rgb(0 0 0 / 20%)'
 }
 
-function WalletItem({data, valuationAmount}:WalletItemProps) {
-    console.log('WalletItem:', data)
+function WalletItem({data, btcToUSDPrice, exchangeInfo, itemPrice}:WalletItemProps) {
     const [flipFalg, setFlipFlag] = useState(true);
     const { updateWalletDialogDisplay, setUpdateWalletDialogDisplay, setHistoryTicker, deleteWalletItemMutation } = walletItemHook();
 
     const contentData = [
         {
             name: '평가손익',
-            data: Math.round(valuationAmount) - (data.ea * data.price),
+            data: Number((itemPrice - data.convertPriceAvg)*data.ea.reduce((prev:number, cur:number) => prev+cur) * btcToUSDPrice * exchangeInfo),
             format: 'money',
             unit: '원'
         },
         {
             name: '수익률',
-            data: ((Math.round(valuationAmount) / (data.ea * data.price)) * 100 - 100).toFixed(2),
+            data: (Number(itemPrice / data.convertPriceAvg) * 100 - 100).toFixed(2),
             unit: '%'
         }
     ]
     const detailData = [
         {
             name: '매수평균가',
-            data: data.total_price.toLocaleString(),
+            data: (btcToUSDPrice * (data.convertPriceAvg) * exchangeInfo),
             unit: '원'
         },
         {
             name: '평가금액',
-            data: (valuationAmount ? Math.round(valuationAmount).toLocaleString() : ''),
+            data: ((btcToUSDPrice * itemPrice) * data.ea.reduce((prev:number, cur:number) => prev+cur))*exchangeInfo,
             unit: '원'
         },
         {
             name: '매수금액',
-            data: (data.total_ea * data.total_ea).toLocaleString(),
+            data: (btcToUSDPrice * (data.convertPriceAvg * data.ea.reduce((prev:number, cur:number) => prev+cur)) * exchangeInfo),
             unit: '원'
         },
         {
             name: '보유수량',
-            data: data.total_ea,
+            data: data.ea.reduce((prev:number, cur:number) => prev+cur),
             unit: data.ticker
         }
     ]
@@ -84,7 +83,9 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
                     : (
                         Number(item.data) < 0 ?"#0e52cf" : undefined
                     )
-                }>{item.format == 'money' ? item.data.toLocaleString() : item.data} {item.unit}</S.contentDescription>
+                }>{
+                    isNaN(item.data) ? 0 : (item.format == 'money' ? Math.round(item.data).toLocaleString() : item.data)
+                } {item.unit}</S.contentDescription>
             </React.Fragment>)
         })
     }
@@ -96,7 +97,7 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
                     {item.name}
                 </S.DetailTitle>
                 <S.DetailDescription>
-                    {item.data} {item.unit}
+                    { isNaN(item.data) ? 0 : Math.round(item.data).toLocaleString() } {item.unit}
                 </S.DetailDescription>
             </React.Fragment>)
         })
@@ -113,8 +114,8 @@ function WalletItem({data, valuationAmount}:WalletItemProps) {
     }
 
     const deleteWalletItem = () => {
-        deleteWalletItemMutation.mutate(data._id)
         // 업데이트 필요
+        deleteWalletItemMutation.mutate(data._id)
     }
 
     return(

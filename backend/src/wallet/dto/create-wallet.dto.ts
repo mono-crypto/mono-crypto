@@ -11,6 +11,6 @@ export class CreateWalletDto {
   @Transform(({ value }) => parseInt(value.replace(new RegExp(',', 'g'), '')))
   ea: number | string;
   date: Date;
-  convertPrice?: number;
+  convertPrice?: number = 0;
   user: CreateAuthDto;
 }

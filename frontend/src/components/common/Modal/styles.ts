@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components'
+import { closeIcon } from '@/assets/img'
 
 interface WrapperProps {
     width?: string
@@ -42,6 +43,8 @@ export const Wrapper = styled.div<WrapperProps>`
 export const Content = styled.div`
     display: inline-block;
     width: 100%;
+    max-height: 60vh;
+    overflow: scroll;
 
     & > div + div {
         margin-top: 1.5rem;
@@ -62,4 +65,16 @@ export const Title = styled.div`
     margin-bottom: 20px;
     font-weight: bold;
     font-size: 20px;
+`
+
+
+export const CloseButton = styled.div`
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    padding: 0.9rem;
+    font-size: 0;
+    background-image: url(${closeIcon});
+    background-size: 100%;
+    border: 0;
 `

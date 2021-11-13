@@ -25,6 +25,9 @@ export class Wallet {
   @Prop()
   convertPrice: number;
 
+  @Prop()
+  convertMarket: string;
+
   @Prop({ required: true, type: User })
   user: UserDocument;
 }

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 
 import Modal from '@/components/common/Modal'
+import Button from '@/components/common/Button'
 import * as S from './styles'
 
 import { walletItemGroupHook } from '@/hooks/walletItemGroupHook'
@@ -54,18 +55,17 @@ function WalletItemModal() {
             hasTitle={ticker+" 트랜잭션내역"}
             width="100%"
             maxWidth="80%"
+            hasCloseButton={true}
         >
             {loading ? '... loading' : historyData?.map((item, index) => {
                 return (
-                    <div style={
-                        {'display': 'flex'}
-                    } key={index}>
-                        <div>{item.market} / {item.price} / {item.ea} / {item.date}</div>
-                        <div>
-                            <button>수정</button>
-                            <button>삭제</button>
-                        </div>
-                    </div>
+                    <S.ListItem key={index}>
+                        <div>{item.market} / {item.price} / {item.ea} / {new Date(item.date).toLocaleDateString()}</div>
+                        <S.ListItemButtonWrap>
+                            <Button>수정</Button>
+                            <Button>삭제</Button>
+                        </S.ListItemButtonWrap>
+                    </S.ListItem>
                 )
             })}
         </Modal>
