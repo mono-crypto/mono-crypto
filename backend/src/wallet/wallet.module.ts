@@ -8,6 +8,7 @@ import { Wallet, WalletSchema } from '../schemas/wallet.schema';
 import { BullModule } from '@nestjs/bull';
 import { BinanceModule } from '../binance/binance.module';
 import { WalletConsumer } from './wallet.processor';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { WalletConsumer } from './wallet.processor';
         bounceBack: false,
       },
     }),
+    AuthModule,
   ],
   controllers: [WalletController],
   providers: [WalletService, WalletConsumer],

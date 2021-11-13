@@ -27,7 +27,11 @@ export function coinListModal() {
         setDialogLoadingState(true);
         try {
             await mutation.mutate({
-                ...dialogValue,
+                ticker: dialogValue.ticker,
+                market: dialogValue.market,
+                price: dialogValue.price,
+                ea: dialogValue.ea,
+                date: dialogValue.date,
                 'user': user
             })
         } catch(e) {

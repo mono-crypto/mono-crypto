@@ -4,7 +4,8 @@ import * as S from './styles'
 
 import Button from '@/components/common/Button'
 import { walletItemHook } from '@/hooks/walletItemHook'
-
+import { useHistoryVisible } from '@/atoms/walletItemHistoryState'
+import { getAuthState } from '@/atoms/authState'
 
 interface WalletItemProps {
     data: any;
@@ -36,6 +37,8 @@ const ButtonHoverCSS = {
 function WalletItem({data, btcToUSDPrice, exchangeInfo, itemPrice}:WalletItemProps) {
     const [flipFalg, setFlipFlag] = useState(true);
     const { updateWalletDialogDisplay, setUpdateWalletDialogDisplay, setHistoryTicker, deleteWalletItemMutation } = walletItemHook();
+    const [visible, setHistoryVisible] = useHistoryVisible();
+    const user = getAuthState();
 
     const contentData = [
         {
@@ -108,14 +111,15 @@ function WalletItem({data, btcToUSDPrice, exchangeInfo, itemPrice}:WalletItemPro
     }
     const getAssetHistory = () => {
         setHistoryTicker(data.ticker)
-        setUpdateWalletDialogDisplay({
-            'state': !updateWalletDialogDisplay.state
-        })
+        setHistoryVisible(true)
     }
 
     const deleteWalletItem = () => {
-        // 업데이트 필요
-        deleteWalletItemMutation.mutate(data._id)
+        console.log('삭제')
+        deleteWalletItemMutation.mutate({
+            access_token: user?.access_token,
+            ticker: data.ticker
+        })
     }
 
     return(

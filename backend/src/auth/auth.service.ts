@@ -53,6 +53,13 @@ export class AuthService {
       .exec();
   }
 
+  async getUserForAPIRequest(access_token: string) {
+    const userProfile = await this.getUserProfile(access_token).toPromise();
+    const user = await this.findUser(userProfile.data['sub']);
+
+    return user;
+  }
+
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
@@ -66,7 +73,6 @@ export class AuthService {
     );
 
     const userProfile = await this.getUserProfile(access_token).toPromise();
-    console.log(userProfile);
     const user = await this.findUser(userProfile.data['sub']);
 
     let createUser = null;
@@ -80,6 +86,7 @@ export class AuthService {
           email: user.email,
           name: user.name,
           picture: user.picture,
+          access_token: access_token,
         }
       : false;
   }

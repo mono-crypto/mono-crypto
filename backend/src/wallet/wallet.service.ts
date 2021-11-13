@@ -11,11 +11,14 @@ import { InjectQueue } from '@nestjs/bull';
 
 import { Wallet, WalletDocument } from '../schemas/wallet.schema';
 
+import { AuthService } from '../auth/auth.service';
+
 @Injectable()
 export class WalletService {
   constructor(
     @InjectModel(Wallet.name) private walletModel: Model<WalletDocument>,
     @InjectQueue('walletItemCalc') private audioQueue: Queue,
+    private authService: AuthService,
   ) {}
 
   async create(createWalletDto: CreateWalletDto): Promise<any> {
@@ -87,9 +90,17 @@ export class WalletService {
     );
   }
 
-  remove(deleteWalletDto: DeleteWalletDto) {
+  async remove(deleteWalletDto: DeleteWalletDto) {
+    const user = await this.authService.getUserForAPIRequest(
+      deleteWalletDto.access_token,
+    );
+    if (!user) {
+      return 'Not find User';
+    }
+
     return this.walletModel.deleteOne({
-      _id: mongoose.Types.ObjectId(deleteWalletDto.ObjectId),
+      'user.google_id': user.google_id,
+      ticker: deleteWalletDto.ticker,
     });
   }
 }

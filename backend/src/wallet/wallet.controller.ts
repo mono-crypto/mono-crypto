@@ -11,17 +11,13 @@ import {
   Param,
 } from '@nestjs/common';
 import { WalletService } from './wallet.service';
-import { BinanceService } from '../binance/binance.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { DeleteWalletDto } from './dto/delete-wallet.dto';
 
 @Controller('wallet')
 export class WalletController {
-  constructor(
-    private readonly walletService: WalletService,
-    private readonly binanceService: BinanceService,
-  ) {}
+  constructor(private readonly walletService: WalletService) {}
 
   @Get()
   findUserWalletList(@Query('id') id: number) {

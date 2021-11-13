@@ -40,7 +40,7 @@ function Modal({...props}:ModalProps) {
                 }
                 {
                     props.hasCloseButton &&
-                    <S.CloseButton>close</S.CloseButton>
+                    <S.CloseButton onClick={props.changeDialogState}>close</S.CloseButton>
                 }
             </S.Wrapper>
         </S.Dimm>

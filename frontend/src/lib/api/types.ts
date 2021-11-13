@@ -43,5 +43,6 @@ export type User = {
     google_id: number
     email: string
     name: string
-    picture: string
+    picture: string,
+    access_token: string
   }

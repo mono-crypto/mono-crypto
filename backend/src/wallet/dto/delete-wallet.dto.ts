@@ -1,3 +1,4 @@
 export class DeleteWalletDto {
-  ObjectId: string;
+  access_token: string;
+  ticker: string;
 }

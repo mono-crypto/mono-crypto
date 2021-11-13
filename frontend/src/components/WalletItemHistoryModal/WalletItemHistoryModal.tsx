@@ -7,7 +7,7 @@ import * as S from './styles'
 import { walletItemGroupHook } from '@/hooks/walletItemGroupHook'
 import { useWalletItemHistory } from '@/hooks/query/useWalletItemHistory'
 import { getAuthState } from '@/atoms/authState'
-import { getHistoryTicker, useHistory } from '@/atoms/walletItemHistoryState'
+import { getHistoryTicker, useHistory, useHistoryVisible } from '@/atoms/walletItemHistoryState'
 
 const inputCSS = {
     padding: '0.4rem 0.8rem',
@@ -26,31 +26,30 @@ function WalletItemModal() {
     const user = getAuthState()
     const ticker = getHistoryTicker()
     const [history, setHistory] = useHistory();
+    const [visible, setHistoryVisible] = useHistoryVisible();
 
     
     const { isLoading: loading, data: historyData } = useWalletItemHistory(user, ticker)
-    // console.log("historyData: ", historyData)
-    // useEffect(() => {
-    //     if(historyData) {
-    //         setHistory({
-    //             ...history,
-    //             [ticker]: [...historyData]
-    
-    //         })
-    //     }
-    // }, [historyData])
 
     const changeDialogState = useCallback(() => {
+        setHistoryVisible(!visible)
+    }, [visible])
+
+    const openUpdateDialog = () => {
         setUpdateWalletDialogDisplay({
-            'state': !updateWalletDialogDisplay.state
+            state: true
         })
-    }, [updateWalletDialogDisplay])
+    }
+
+    const transactionUpdate = (id:string) => {
+        
+    }
 
     return (
       <>
         <Modal
             changeDialogState={changeDialogState}
-            visible={updateWalletDialogDisplay.state}
+            visible={visible}
             hasBottomBtn={false}
             hasTitle={ticker+" 트랜잭션내역"}
             width="100%"
@@ -58,12 +57,13 @@ function WalletItemModal() {
             hasCloseButton={true}
         >
             {loading ? '... loading' : historyData?.map((item, index) => {
+                console.log(item)
                 return (
                     <S.ListItem key={index}>
                         <div>{item.market} / {item.price} / {item.ea} / {new Date(item.date).toLocaleDateString()}</div>
                         <S.ListItemButtonWrap>
-                            <Button>수정</Button>
-                            <Button>삭제</Button>
+                            <Button onClick={openUpdateDialog}>수정</Button>
+                            <Button onClick={() => transactionUpdate(item._id)}>삭제</Button>
                         </S.ListItemButtonWrap>
                     </S.ListItem>
                 )
