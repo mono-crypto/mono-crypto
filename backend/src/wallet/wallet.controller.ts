@@ -13,7 +13,7 @@ import {
 import { WalletService } from './wallet.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
-import { DeleteWalletDto } from './dto/delete-wallet.dto';
+import { DeleteWalletDto, DeleteTransactionDto } from './dto/delete-wallet.dto';
 
 @Controller('wallet')
 export class WalletController {
@@ -44,7 +44,13 @@ export class WalletController {
   }
 
   @Delete()
-  remove(@Body() deleteWalletDto: DeleteWalletDto) {
-    return this.walletService.remove(deleteWalletDto);
+  removeTicker(@Body() deleteWalletDto: DeleteWalletDto) {
+    return this.walletService.removeTicker(deleteWalletDto);
+  }
+
+  @Delete('transaction')
+  removeTransaction(@Body() deleteTransactionDto: DeleteTransactionDto) {
+    console.log('transaction delete...');
+    return this.walletService.removeTransaction(deleteTransactionDto);
   }
 }

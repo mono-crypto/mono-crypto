@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
-import { DeleteWalletDto } from './dto/delete-wallet.dto';
+import { DeleteWalletDto, DeleteTransactionDto } from './dto/delete-wallet.dto';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Queue } from 'bull';
@@ -90,17 +90,25 @@ export class WalletService {
     );
   }
 
-  async remove(deleteWalletDto: DeleteWalletDto) {
+  async removeTicker(deleteWalletDto: DeleteWalletDto) {
     const user = await this.authService.getUserForAPIRequest(
       deleteWalletDto.access_token,
     );
-    if (!user) {
-      return 'Not find User';
-    }
+
+    return this.walletModel.deleteMany({
+      'user.google_id': user.google_id,
+      ticker: deleteWalletDto.ticker,
+    });
+  }
+
+  async removeTransaction(deleteTransactionDto: DeleteTransactionDto) {
+    const user = await this.authService.getUserForAPIRequest(
+      deleteTransactionDto.access_token,
+    );
 
     return this.walletModel.deleteOne({
       'user.google_id': user.google_id,
-      ticker: deleteWalletDto.ticker,
+      _id: deleteTransactionDto._id,
     });
   }
 }

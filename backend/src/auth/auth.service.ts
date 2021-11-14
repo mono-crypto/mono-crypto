@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 
@@ -11,6 +11,7 @@ import { Model } from 'mongoose';
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -35,14 +36,17 @@ export class AuthService {
   }
 
   getUserProfile(access_token: string): Observable<AxiosResponse<any>> {
-    return this.httpService.get(
-      'https://www.googleapis.com/oauth2/v3/userinfo',
-      {
+    return this.httpService
+      .get('https://www.googleapis.com/oauth2/v3/userinfo', {
         params: {
           access_token: access_token,
         },
-      },
-    );
+      })
+      .pipe(
+        catchError((e) => {
+          throw new HttpException(e.response.data, e.response.status);
+        }),
+      );
   }
 
   async findUser(id: User['google_id']) {
@@ -54,9 +58,16 @@ export class AuthService {
   }
 
   async getUserForAPIRequest(access_token: string) {
-    const userProfile = await this.getUserProfile(access_token).toPromise();
-    const user = await this.findUser(userProfile.data['sub']);
+    const userProfile = await this.getUserProfile(access_token)
+      .pipe(
+        map((res) => {
+          console.log('res: ', res);
+          return res;
+        }),
+      )
+      .toPromise();
 
+    const user = await this.findUser(userProfile.data['sub']);
     return user;
   }
 
