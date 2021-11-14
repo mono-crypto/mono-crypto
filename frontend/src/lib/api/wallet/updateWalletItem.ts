@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../apiClient'
 import { updateWalletItem as TupdateWalletItem } from '../types'
 
 export async function updateWalletItem(params:TupdateWalletItem) {

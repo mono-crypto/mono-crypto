@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../apiClient'
 import { WalletItem } from '../types'
 
 export async function getWalletList(id: number | undefined) {

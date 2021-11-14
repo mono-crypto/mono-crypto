@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from 'react-query'
 
 import { updateWalletDialogState, updateWalletDialogDisplayState, loadingUpdateWalletDialog } from '@/atoms/updateWalletItemDialog'
 
+import { deleteTransaction as AdeleteTransaction, deleteTransactionParams as IdeleteTransactionParams } from '@/lib/api/wallet/deleteWallet';
 import { updateWalletItem as PupdateWalletItem } from '@/lib/api/wallet/updateWalletItem';
 import { updateWalletItem as TupdateWalletItem } from '@/lib/api/types'
 
@@ -18,6 +19,12 @@ export function walletItemGroupHook() {
             queryClient.invalidateQueries('walletList')
         }
     })
+    const deleteWalletTransactionMutation = useMutation((deleteTransactionParams:IdeleteTransactionParams) => AdeleteTransaction(deleteTransactionParams), {
+        onSuccess: (data) => {
+            console.log('deleteWalletTransactionMutation: ', data)
+            queryClient.invalidateQueries(['walletItemHistory'])
+        }
+    })
 
     return {
         updateWalletItemMutation: updateWalletItemMutation,
@@ -27,5 +34,6 @@ export function walletItemGroupHook() {
         setUpdateWalletDialogDisplay: setUpdateWalletDialogDisplay,
         updateWalletDialogLoading: updateWalletDialogLoading,
         setUpdateWalletDialogLoading: setUpdateWalletDialogLoading,
+        deleteWalletTransactionMutation: deleteWalletTransactionMutation,
     }
 }

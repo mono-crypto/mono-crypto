@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 
 import Modal from '@/components/common/Modal'
 import Button from '@/components/common/Button'
@@ -21,6 +21,7 @@ function WalletItemModal() {
     const {
         updateWalletDialogDisplay,
         setUpdateWalletDialogDisplay,
+        deleteWalletTransactionMutation
     } = walletItemGroupHook();
 
     const user = getAuthState()
@@ -45,6 +46,13 @@ function WalletItemModal() {
         
     }
 
+    const transactionDelete = (id:string) => {
+        deleteWalletTransactionMutation.mutate({
+            access_token: user?.access_token,
+            _id: id
+        })
+    }
+
     return (
       <>
         <Modal
@@ -57,13 +65,13 @@ function WalletItemModal() {
             hasCloseButton={true}
         >
             {loading ? '... loading' : historyData?.map((item, index) => {
-                console.log(item)
+                console.log('historyData: ', item)
                 return (
                     <S.ListItem key={index}>
                         <div>{item.market} / {item.price} / {item.ea} / {new Date(item.date).toLocaleDateString()}</div>
                         <S.ListItemButtonWrap>
                             <Button onClick={openUpdateDialog}>수정</Button>
-                            <Button onClick={() => transactionUpdate(item._id)}>삭제</Button>
+                            <Button onClick={() => transactionDelete(item._id)}>삭제</Button>
                         </S.ListItemButtonWrap>
                     </S.ListItem>
                 )

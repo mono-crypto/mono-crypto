@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../apiClient'
 import { CoinListItem } from '../types'
 
 export async function getCoinList() {

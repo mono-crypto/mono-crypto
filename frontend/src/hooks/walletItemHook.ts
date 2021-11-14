@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 
 import { useMutation, useQueryClient } from 'react-query'
-import { deleteWalletItem as AdeleteWalletItem, deleteItemParams as IdeleteItemParams } from '@/lib/api/wallet/deleteWalletItem'
+import { deleteWalletItem as AdeleteWalletItem, deleteItemParams as IdeleteItemParams } from '@/lib/api/wallet/deleteWallet'
 
 import { updateWalletDialogDisplayState, updateWalletDialogState } from '@/atoms/updateWalletItemDialog';
 import { useHistoryTicker } from '@/atoms/walletItemHistoryState';
