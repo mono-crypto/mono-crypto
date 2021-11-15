@@ -32,7 +32,7 @@ export function coinListModal() {
                 price: dialogValue.price,
                 ea: dialogValue.ea,
                 date: dialogValue.date,
-                'user': user
+                access_token: user?.access_token
             })
         } catch(e) {
             console.log(e);

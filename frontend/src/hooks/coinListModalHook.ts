@@ -16,8 +16,9 @@ export function coinListModalHook() {
     const {isLoading:coinIsLoading, data:coinData, error:coinDataError} = useCoinListQuery();
 
     const mutation = useMutation((addWalletItemData:TaddWalletItem) => (AaddWalletItem(addWalletItemData)), {
-        onSuccess: () => {
+        onSuccess: (data, params) => {
             queryClient.invalidateQueries('walletList')
+            queryClient.invalidateQueries(['walletItemHistory', params.ticker])
         }
     })
 

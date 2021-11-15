@@ -24,7 +24,7 @@ export type addWalletItem = {
     ea: number | string
     date: string
     convertPrice?: number
-    user: User | null
+    access_token?: User['access_token'] 
     loading?: boolean
 }
 

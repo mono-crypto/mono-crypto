@@ -5,14 +5,16 @@ const axiosInstance = axios.create();
 
 axiosInstance.defaults.baseURL =
   process.env.NODE_ENV === 'development' ? '/api' : ''
-
+axiosInstance.defaults.validateStatus = function (status) {
+  return status >= 200 && status < 300 || status == 401;
+},
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log(response.status)
     if(response.status == 401) {
       authStorage.clean()
       alert('토큰이 만료됐습니다.')
+      window.location.reload();
     }
     return response
   }

@@ -110,15 +110,14 @@ function WalletItem({data, btcToUSDPrice, exchangeInfo, itemPrice}:WalletItemPro
         setFlipFlag(!flipFalg)
     }
     const getAssetHistory = () => {
-        setHistoryTicker(data.ticker)
+        setHistoryTicker(data._id)
         setHistoryVisible(true)
     }
 
     const deleteWalletItem = () => {
-        console.log('삭제')
         deleteWalletItemMutation.mutate({
             access_token: user?.access_token,
-            ticker: data.ticker
+            ticker: data._id
         })
     }
 

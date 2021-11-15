@@ -3,10 +3,11 @@ import { getWalletItemHistory } from '@/lib/api/wallet/getWalletItemHistory'
 import { User } from '@/lib/api/types'
  
 export function useWalletItemHistory(user: User, ticker: string) {
-  return useQuery(['walletItemHistory', user, ticker], () => getWalletItemHistory({
-      user,
-      ticker
+  return useQuery(['walletItemHistory', ticker], () => getWalletItemHistory({
+    user,
+    ticker
   }), {
-      enabled: ticker ? true : false
+    staleTime: (1000 * 60) * 5,
+    enabled: ticker ? true : false
   })
 }

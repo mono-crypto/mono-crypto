@@ -5,9 +5,8 @@ export interface deleteItemParams {
     ticker: string
 }
 
-export interface deleteTransactionParams {
-    access_token: string | undefined
-    _id: string
+export interface deleteTransactionParams extends deleteItemParams{
+    _id: string,
 }
 
 export async function deleteWalletItem(params:deleteItemParams) {
