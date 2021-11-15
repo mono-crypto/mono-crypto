@@ -3,4 +3,5 @@ export class CreateAuthDto {
   email: string;
   name: string;
   picture: string;
+  access_token?: string;
 }

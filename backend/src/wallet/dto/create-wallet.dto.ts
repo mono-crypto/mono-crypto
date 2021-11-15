@@ -12,5 +12,10 @@ export class CreateWalletDto {
   ea: number | string;
   date: Date;
   convertPrice?: number = 0;
-  user: CreateAuthDto;
+  access_token: string;
+  // user: CreateAuthDto;
 }
+
+// export class CreateWalletDto2 extends CreateAuthDto {
+//   user: CreateAuthDto;
+// }

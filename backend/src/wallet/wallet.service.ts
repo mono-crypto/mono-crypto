@@ -22,7 +22,16 @@ export class WalletService {
   ) {}
 
   async create(createWalletDto: CreateWalletDto): Promise<any> {
-    const createdWalletItem = new this.walletModel(createWalletDto);
+    const user = await this.authService.getUserForAPIRequest(
+      createWalletDto.access_token,
+    );
+
+    const newCreateWalletDto = {
+      ...createWalletDto,
+      user: user,
+    };
+
+    const createdWalletItem = new this.walletModel(newCreateWalletDto);
 
     return createdWalletItem.save(() => {
       console.log('createdWalletItem.save');
