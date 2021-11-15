@@ -8,6 +8,16 @@ axiosInstance.defaults.baseURL =
 axiosInstance.defaults.validateStatus = function (status) {
   return status >= 200 && status < 300 || status == 401;
 },
+
+// Add a response interceptor
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const user = authStorage.get()
+    config.headers.Authorization = user?.access_token
+    return config
+  }
+)
+
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
