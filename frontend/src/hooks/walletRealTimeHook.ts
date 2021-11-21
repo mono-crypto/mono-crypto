@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import useWebSocket from 'react-use-websocket'
 
@@ -10,8 +10,10 @@ import { cryptoPriceState } from '@/atoms/cryptoPriceState';
 
 import { ICryptoMarketPrices } from '@/components/WalletRealTime/WalletRealTime';
 import { getSocketURL } from '@/atoms/socketState';
+import { getAuthState } from '@/atoms/authState';
 
 export function walletRealTimeHook() {
+    const user = getAuthState()
     const [exchangInfoData, setExchangeInfo] = useRecoilState(exchangeInfo)
     const [walletItemListData] = useRecoilState(walletItemList)
     const [, setCryptoMarketPricesData] = useRecoilState(cryptoPriceState)
@@ -24,7 +26,7 @@ export function walletRealTimeHook() {
       sendMessage,
       lastMessage,
       readyState,
-    } = useWebSocket(socketURLValue);
+    } = useWebSocket(socketURLValue, {}, user ? true : false);
     
     const cryptoMarketPrices = useRef<ICryptoMarketPrices>({})
     cryptoMarketPrices.current = useMemo(() => {
@@ -43,11 +45,11 @@ export function walletRealTimeHook() {
         setCryptoMarketPricesData(lastMessage?.data)
     }, [lastMessage])
 
-    useEffect(() => {
-        if (allExchangeInfoData) {
-            setExchangeInfo(allExchangeInfoData)
-        }
-    }, [allExchangeInfoData])
+    // useEffect(() => {
+    //     if (allExchangeInfoData) {
+    //         setExchangeInfo(allExchangeInfoData)
+    //     }
+    // }, [allExchangeInfoData])
 
     return {
         exchangeInfoData: exchangInfoData || allExchangeInfoData,
