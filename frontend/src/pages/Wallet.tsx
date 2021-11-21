@@ -4,6 +4,7 @@ import WalletRealTime from '@/components/WalletRealTime'
 import WalletChart from '@/components/WalletChart'
 import CoinListItemGroup from '@/components/CoinListItemGroup'
 import WalletItemHistoryModal from '@/components/WalletItemHistoryModal'
+import CoinListModal from '@/components/CoinListModal'
 
 import styled from 'styled-components'
 
@@ -22,10 +23,11 @@ function Wallet() {
     <WalletWrap>
       <WalletChart/>
       <WalletRealTime />
-      <WalletItemHistoryModal />
       <CoinListItemGroupDiv>
         <CoinListItemGroup />
       </CoinListItemGroupDiv>
+      <WalletItemHistoryModal />
+      <CoinListModal />
     </WalletWrap>
   )
 }

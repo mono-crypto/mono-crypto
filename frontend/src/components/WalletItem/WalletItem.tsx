@@ -36,7 +36,7 @@ const ButtonHoverCSS = {
 
 function WalletItem({data, btcToUSDPrice, exchangeInfo, itemPrice}:WalletItemProps) {
     const [flipFalg, setFlipFlag] = useState(true);
-    const { updateWalletDialogDisplay, setUpdateWalletDialogDisplay, setHistoryTicker, deleteWalletItemMutation } = walletItemHook();
+    const { setHistoryTicker, deleteWalletItemMutation } = walletItemHook();
     const [visible, setHistoryVisible] = useHistoryVisible();
     const user = getAuthState();
 

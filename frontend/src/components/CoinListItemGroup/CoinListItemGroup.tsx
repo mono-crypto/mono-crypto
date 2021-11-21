@@ -11,7 +11,6 @@ import { CoinListItem as TCoinListItem } from '@/lib/api/types'
 import * as S from './styles'
 
 import CoinListItem from '../CoinListItem'
-import CoinListModal from '../CoinListModal'
 
 function CoinListItemGroup() {
     console.log('CoinListItemGroup')
@@ -29,7 +28,6 @@ function CoinListItemGroup() {
         <S.Wrap>
             <CoinListFilterInput/>
             {mapToCoinListItem(filteringList)}
-            <CoinListModal />
         </S.Wrap>
         
     )

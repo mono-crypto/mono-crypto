@@ -2,7 +2,7 @@ import React from 'react'
 
 import * as S from './styles'
 
-import { useAddCoinModalStateSelector } from '@/atoms/addCoinDialog'
+import { useResetAddCoinModalState, useAddCoinModalTickerState, useAddCoinModalVisibleState } from '@/atoms/addCoinDialog'
 
 import { CoinListItem as TCoinListItem } from '@/lib/api/types'
 import Button from '@/components/common/Button'
@@ -25,16 +25,13 @@ const ButtonHoverCSS = {
 }
 
 export default function CoinListItem(props:WalletItemProps) {
-    const [dialogState, setDialogState] = useAddCoinModalStateSelector();
+    const [, setDialogTicker] = useAddCoinModalTickerState();
+    const [, setDialogVisible] = useAddCoinModalVisibleState();
+    const resetDialog = useResetAddCoinModalState();
     const openDialog = () => {
-        setDialogState({
-            ...dialogState,
-            price: '',
-            date: '',
-            ea: 0,
-            ticker: props.data.name,
-            visible: true
-        })
+        resetDialog()
+        setDialogVisible(true)
+        setDialogTicker(props.data.name)
     }
 
     return(

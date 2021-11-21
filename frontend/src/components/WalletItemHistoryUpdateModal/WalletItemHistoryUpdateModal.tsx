@@ -7,8 +7,6 @@ import Select from '@/components/common/Select'
 
 import { coinListModalHook } from '@/hooks/coinListModalHook'
 import { useAddCoinModalVisibleState, useAddCoinModalLoadingState, useAddCoinModalStateSelector, useCoinMarketList } from '@/atoms/addCoinDialog'
-import numberFormat, {formatType} from '@/lib/validation/numberFormat'
-import dateFormat from '@/lib/validation/dateFormat'
 
 const inputCSS = {
     padding: '0.4rem 0.8rem',
@@ -17,9 +15,9 @@ const buttonCSS = {
     padding: '0.3rem 0'
 }
 
-export function coinListModal() {
-    console.log('추가, 수정 모달')
-    const { addMutation, updateMutation, user } = coinListModalHook()
+export function WalletItemHistoryUpdateModal() {
+    console.log('coinListModal')
+    const { mutation, user } = coinListModalHook()
     const [, setDialogLoadingState] = useAddCoinModalLoadingState()
     const [dialogVisibleState, setDialogVisibleState] = useAddCoinModalVisibleState()
     const [dialogValue, setDialogValue] = useAddCoinModalStateSelector()
@@ -28,26 +26,14 @@ export function coinListModal() {
     const modalConfirmAction = useCallback(async() => {
         setDialogLoadingState(true);
         try {
-            if(dialogValue._id) {
-                await updateMutation.mutate({
-                    _id: dialogValue._id,
-                    ticker: dialogValue.ticker,
-                    market: dialogValue.market,
-                    price: dialogValue.price,
-                    ea: dialogValue.ea,
-                    date: dialogValue.date,
-                    access_token: user?.access_token
-                })
-            } else {
-                await addMutation.mutate({
-                    ticker: dialogValue.ticker,
-                    market: dialogValue.market,
-                    price: dialogValue.price,
-                    ea: dialogValue.ea,
-                    date: dialogValue.date,
-                    access_token: user?.access_token
-                })
-            }
+            await mutation.mutate({
+                ticker: dialogValue.ticker,
+                market: dialogValue.market,
+                price: dialogValue.price,
+                ea: dialogValue.ea,
+                date: dialogValue.date,
+                access_token: user?.access_token
+            })
         } catch(e) {
             console.log(e);
         }
@@ -56,10 +42,18 @@ export function coinListModal() {
     }, [dialogValue, user])
     
 
-    const onChangeModalInput = useCallback((e:React.FormEvent<HTMLInputElement>, type:formatType) => {
+    const onChangeModalInput = useCallback((e:React.FormEvent<HTMLInputElement>, type:string) => {
+        let value:any = e.currentTarget.value;
+        if(type === 'number') {
+            value = parseInt(e.currentTarget.value.replace(/[^\d]+/g, ''), 10)
+            if(isNaN(value)) {
+                value = 0
+            }
+        }
+
         setDialogValue({
             ...dialogValue,
-            [e.currentTarget.name]: numberFormat(e.currentTarget.value, type)
+            [e.currentTarget.name]: type === 'number' ? value?.toLocaleString() : value
         });
     }, [dialogValue])
     
@@ -91,30 +85,30 @@ export function coinListModal() {
                 <Label>
                     <span>마켓</span>
                     <div>
-                        <Select css={inputCSS} options={coinMarketList} name="market" onChange={onChangeModalSelect} value={dialogValue.market}/>
+                        <Select css={inputCSS} options={coinMarketList} name="market" onChange={onChangeModalSelect}/>
                     </div>
                 </Label>
             </div>
             <div>
                 <Label>
                     <span>코인당 가격</span>
-                    <Input css={inputCSS} type="text" name="price" onChange={(e) => onChangeModalInput(e, 'number')} value={numberFormat(dialogValue.price, "number")} placeholder="KRW단위"/>
+                    <Input css={inputCSS} type="text" name="price" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.price} placeholder="KRW단위"/>
                 </Label>
             </div>
             <div>
                 <Label>
                     <span>수량</span>
-                    <Input css={inputCSS} type="text" name="ea" onChange={(e) => onChangeModalInput(e, 'number')} value={numberFormat(dialogValue.ea, "number")}/>
+                    <Input css={inputCSS} type="text" name="ea" onChange={(e) => onChangeModalInput(e, 'number')} value={dialogValue.ea}/>
                 </Label>
             </div>
             <div>
                 <Label>
                     <span>날짜</span>
-                    <Input css={inputCSS} type="date" name="date" onChange={(e) => onChangeModalInput(e, 'date')} value={dateFormat(dialogValue.date)}/>
+                    <Input css={inputCSS} type="date" name="date" onChange={(e) => onChangeModalInput(e, 'date')} value={dialogValue.date}/>
                 </Label>
             </div>
         </Modal>
     )
 }
 
-export default coinListModal
+export default WalletItemHistoryUpdateModal

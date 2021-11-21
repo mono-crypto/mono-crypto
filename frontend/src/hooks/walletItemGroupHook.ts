@@ -21,7 +21,6 @@ export function walletItemGroupHook() {
     })
     const deleteWalletTransactionMutation = useMutation((deleteTransactionParams:IdeleteTransactionParams) => AdeleteTransaction(deleteTransactionParams), {
         onSuccess: (data, params) => {
-            console.log('deleteTransaction: ', data, params)
             queryClient.invalidateQueries(['walletItemHistory', params.ticker])
             queryClient.refetchQueries(['walletItemHistory', params.ticker], { active: true, exact: true })
         }

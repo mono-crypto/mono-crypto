@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import * as echarts from 'echarts/core'
@@ -11,10 +11,24 @@ import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import { walletItemList } from '@/atoms/walletListState'
 
+import Button from '@/components/common/Button'
+
 const ButtonWrap = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+const ButtonCSS = {
+  'line-height': '1',
+  'padding': '0.6rem 0.5rem 0.5rem 0.5rem',
+  'width': '20%',
+  'font-size': '1rem'
+  // 'box-shadow': '0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%)'
+}
+
+const ButtonHoverCSS = {
+  'background-color': 'rgb(0 0 0 / 20%)'
+}
 
 echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer])
 
@@ -25,11 +39,22 @@ function WalletChart() {
   const changeChartMode = () => {
     setChartFlag(!chartFlag)
   }
-  const chartData = () => {
-    return walletItemListData ? walletItemListData.map(item => {
+
+  const chartData = useCallback(() => {
+    const data = walletItemListData?.map(item => {
       return { value: item.ea, name: item.ticker}
-    }) : []
-  }
+    })
+
+    return data
+  }, [walletItemListData])
+  
+  const chartAssetData = useCallback(() => {
+    const data = walletItemListData?.map(item => {
+      return { value: item.totalPrice.reduce((prev:number, cur:number) => prev+cur), name: item.ticker}
+    })
+
+    return data
+  }, [walletItemListData])
 
   let option = {
     tooltip: {
@@ -64,7 +89,8 @@ function WalletChart() {
         labelLine: {
           show: false
         },
-        data: chartData()
+        data: chartData(),
+        minAngle: 10
       }
     ]
   }
@@ -101,7 +127,8 @@ function WalletChart() {
         labelLine: {
           show: false
         },
-        data: []
+        data: chartAssetData(),
+        minAngle: 10
       }
     ]
   }
@@ -110,9 +137,9 @@ function WalletChart() {
     return (
       <>
         <ButtonWrap>
-          <button onClick={changeChartMode}>
+          <Button onClick={changeChartMode} css={ButtonCSS} hoverCSS={ButtonHoverCSS}>
             {chartFlag === true ? '자산비중으로 보기' : '보유비중으로 보기'}
-          </button>
+          </Button>
         </ButtonWrap>
         {
           chartFlag ?

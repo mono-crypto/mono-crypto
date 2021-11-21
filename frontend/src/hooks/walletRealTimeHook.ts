@@ -16,6 +16,7 @@ export function walletRealTimeHook() {
     const [walletItemListData] = useRecoilState(walletItemList)
     const [, setCryptoMarketPricesData] = useRecoilState(cryptoPriceState)
     const [socketURLValue] = useRecoilState(getSocketURL);
+    console.log('socketURLValue: ', socketURLValue)
 
     const {isLoading:allExchangeInfoLoading, data:allExchangeInfoData, error:allExchangeInfoError} = useExchangeInfoQuery();
 

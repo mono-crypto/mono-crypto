@@ -15,13 +15,14 @@ const initialState: initialState = {
 }
 
 interface initialState {
+  _id?: Tid
   ticker: TTickerState
   market: TMarketState
   price: TPriceState
   ea: TEaState
   date: TDateState
-  visible: TVisibleState
-  loading: TloadingState
+  visible?: TVisibleState
+  loading?: TloadingState
 }
 
 type TloadingState = boolean
@@ -30,15 +31,16 @@ type TTickerState = string
 type TMarketState = string
 type TPriceState = number | string
 type TEaState = number
-type TDateState = string
+type TDateState = Date
+type Tid = string
 
 export const addCoinModalState = atom<initialState>({
     key: 'addCoinModalState', // unique ID (with respect to other atoms/selectors)
     default: initialState, // default value (aka initial value)
 })
 
-export const addCoinModalStateSelector = selector<initialState>({
-  key: 'setAddCoinModalState',
+export const selectorAddCoinModalState = selector<initialState>({
+  key: 'selectorAddCoinModalState',
   get: ({ get }) => get(addCoinModalState),
   set: ({ set }, newValue) => {
     set(addCoinModalState, (prev) => 
@@ -155,7 +157,7 @@ export function useAddCoinModalState() {
 }
 
 export function useAddCoinModalStateSelector() {
-  return useRecoilState(addCoinModalStateSelector)
+  return useRecoilState(selectorAddCoinModalState)
 }
 
 export function useAddCoinModalTickerState() {

@@ -14,4 +14,8 @@ export const ListItem = styled.div`
 
 export const ListItemButtonWrap = styled.div`
     display: flex;
+
+    button + button {
+        margin-left: 1rem
+    }
 `

@@ -32,10 +32,13 @@ export default function loginHook() {
     }
 
     const logout = () => {
-        setGoogleAccessToken(null)
-        setAuthState(null)
-        authStorage.clean()
-        queryClient.removeQueries(['walletList'])
+        if(window.confirm('로그아웃 하시겠습니까?')) {
+            setGoogleAccessToken(null)
+            setAuthState(null)
+            authStorage.clean()
+            window.location.reload()
+            queryClient.removeQueries(['walletList'])
+        }
     }
 
     useEffect(()=> {

@@ -22,7 +22,7 @@ export type addWalletItem = {
     market: string
     price: number | string
     ea: number | string
-    date: string
+    date: Date
     convertPrice?: number
     access_token?: User['access_token'] 
     loading?: boolean
@@ -32,11 +32,8 @@ export type deleteWalletItem = {
     id: string
 }
 
-export type updateWalletItem = {
+export type updateWalletItem = addWalletItem & {
     _id: string
-    ea?: number
-    price?: number
-    date?: string
 }
 
 export type User = {

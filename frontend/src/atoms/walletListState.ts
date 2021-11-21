@@ -1,7 +1,6 @@
 import {
     atom, selector, useRecoilValue
   } from 'recoil';
-import { WalletItem as TWalletItem } from '@/lib/api/types'
 
 import { getAuthState } from './authState'
 

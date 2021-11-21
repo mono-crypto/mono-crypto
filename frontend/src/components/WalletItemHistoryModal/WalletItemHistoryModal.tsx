@@ -9,11 +9,15 @@ import { useWalletItemHistory } from '@/hooks/query/useWalletItemHistory'
 import { getAuthState } from '@/atoms/authState'
 import { getHistoryTicker, useHistory, useHistoryVisible } from '@/atoms/walletItemHistoryState'
 
-const inputCSS = {
-    padding: '0.4rem 0.8rem',
-}
+import { useAddCoinModalStateSelector } from '@/atoms/addCoinDialog'
+
+import dateFormat from '@/lib/validation/dateFormat'
 const buttonCSS = {
-    padding: '0.3rem 0'
+    padding: '0.3rem 1rem'
+}
+
+const ButtonHoverCSS = {
+    'background-color': 'rgb(0 0 0 / 20%)'
 }
 
 function WalletItemHistoryModal() {
@@ -24,26 +28,28 @@ function WalletItemHistoryModal() {
         deleteWalletTransactionMutation
     } = walletItemGroupHook();
 
+    const [dialogState, setDialogState] = useAddCoinModalStateSelector();
     const user = getAuthState()
     const ticker = getHistoryTicker()
     const [history, setHistory] = useHistory();
     const [visible, setHistoryVisible] = useHistoryVisible();
     
     const { isLoading: loading, data: historyData } = useWalletItemHistory(user, ticker)
-
+    
+    const openModifyDialog = (selectData) => {
+        setDialogState({
+            _id: selectData._id,
+            price: selectData.price,
+            date: selectData.date,
+            ea: selectData.ea,
+            ticker: selectData.ticker,
+            market: selectData.market,
+            visible: true
+        })
+    }
     const changeDialogState = useCallback(() => {
         setHistoryVisible(!visible)
     }, [visible])
-
-    const openUpdateDialog = () => {
-        setUpdateWalletDialogDisplay({
-            state: true
-        })
-    }
-
-    const transactionUpdate = (id:string) => {
-        
-    }
 
     const transactionDelete = (id: string, ticker: string) => {
         deleteWalletTransactionMutation.mutate({
@@ -52,6 +58,8 @@ function WalletItemHistoryModal() {
             ticker: ticker
         })
     }
+
+    
 
     return (
       <>
@@ -64,13 +72,13 @@ function WalletItemHistoryModal() {
             maxWidth="80%"
             hasCloseButton={true}
         >
-            {loading ? '... loading' : historyData?.map((item, index) => {
+            {loading ? '... loading' : historyData?.map((item, index:number) => {
                 return (
                     <S.ListItem key={index}>
                         <div>{item.market} / {item.price} / {item.ea} / {new Date(item.date).toLocaleDateString()}</div>
                         <S.ListItemButtonWrap>
-                            <Button onClick={openUpdateDialog}>수정</Button>
-                            <Button onClick={() => transactionDelete(item._id, item.ticker)}>삭제</Button>
+                            <Button onClick={() => openModifyDialog(item)} css={buttonCSS} hoverCSS={ButtonHoverCSS}>수정</Button>
+                            <Button onClick={() => transactionDelete(item._id, item.ticker)} css={buttonCSS} hoverCSS={ButtonHoverCSS}>삭제</Button>
                         </S.ListItemButtonWrap>
                     </S.ListItem>
                 )
