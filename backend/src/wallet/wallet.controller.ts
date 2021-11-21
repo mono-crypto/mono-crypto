@@ -16,12 +16,13 @@ import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { DeleteWalletDto, DeleteTransactionDto } from './dto/delete-wallet.dto';
 import { AuthGuard } from '../auth/auth.guard';
+
 @Controller('wallet')
+@UseGuards(AuthGuard)
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
   @Get()
-  @UseGuards(AuthGuard)
   findUserWalletList(@Query('id') id: number) {
     return this.walletService.findUserWalletList(id);
   }
@@ -40,9 +41,10 @@ export class WalletController {
     return this.walletService.create(createWalletDto);
   }
 
+  @UsePipes(new ValidationPipe({ transform: true }))
   @Patch()
   update(@Body() updateWalletDto: UpdateWalletDto) {
-    return this.walletService.update(updateWalletDto);
+    return this.walletService.historyUpdate(updateWalletDto);
   }
 
   @Delete()

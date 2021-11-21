@@ -85,12 +85,6 @@ export class BinanceService {
     //     "17928899.62484339" // Ignore.
     //   ]
     // ]
-
-    console.log(
-      'getKlines: ',
-      ticker.toUpperCase() + market.toUpperCase(),
-      date,
-    );
     const timeStamp = new Date(date).getTime();
     try {
       const klinesData = await this.client.klines(
@@ -102,10 +96,8 @@ export class BinanceService {
           endTime: timeStamp,
         },
       );
-      console.log('klinesData: ', klinesData);
       return klinesData.data;
     } catch (e) {
-      console.log('klinesData Error: ', e);
       this.logger.log(e);
       throw e;
     }

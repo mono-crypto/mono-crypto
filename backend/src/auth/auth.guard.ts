@@ -3,6 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   Inject,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -19,12 +20,13 @@ export class AuthGuard implements CanActivate {
     // access_token
     const { authorization } = request.headers;
 
+    console.log();
     return this.authService.getUserProfile(authorization).pipe(
       map(() => {
         return true;
       }),
       catchError(() => {
-        return of(false);
+        throw new UnauthorizedException();
       }),
     );
   }

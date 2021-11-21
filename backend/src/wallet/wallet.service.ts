@@ -36,7 +36,7 @@ export class WalletService {
     return createdWalletItem.save(() => {
       console.log('createdWalletItem.save');
       this.audioQueue.add('updateWalletConvetPrice', {
-        createdWalletItem: createdWalletItem,
+        updatedWalletItem: createdWalletItem,
       });
     });
   }
@@ -90,6 +90,20 @@ export class WalletService {
 
   findOne(id: number) {
     return `This action returns a #${id} wallet`;
+  }
+
+  historyUpdate(updateWalletDto: UpdateWalletDto) {
+    return this.walletModel.findOneAndUpdate(
+      { _id: mongoose.Types.ObjectId(updateWalletDto._id) },
+      updateWalletDto,
+      null,
+      (err, res) => {
+        const updatedWalletItem = res;
+        this.audioQueue.add('updateWalletConvetPrice', {
+          updatedWalletItem: updatedWalletItem,
+        });
+      },
+    );
   }
 
   update(updateWalletDto: UpdateWalletDto) {

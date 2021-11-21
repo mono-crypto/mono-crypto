@@ -6,7 +6,7 @@ export class CoinController {
   constructor(private readonly coinService: CoinService) {}
 
   @Get()
-  getHello(): Promise<any> {
+  getCoinList(): Promise<any> {
     // return this.coinService.getBinance().toPromise();
     return this.coinService.getCoinList();
   }

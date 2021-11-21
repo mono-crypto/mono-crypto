@@ -18,17 +18,18 @@ export class WalletConsumer {
 
   @Process('updateWalletConvetPrice')
   async updateWalletConvetPrice(job: Job<any>) {
-    const createdWalletItem = job.data.createdWalletItem;
+    const updatedWalletItem = job.data.updatedWalletItem;
+    console.log('processor: ', updatedWalletItem);
     const defaultConvertMarket = 'BTC';
 
     const avgPriceArray = await this.binanceService.getAvgPriceForTime(
-      createdWalletItem.ticker,
+      updatedWalletItem.ticker,
       defaultConvertMarket,
-      createdWalletItem.date,
+      updatedWalletItem.date,
     );
 
     const updateObj = {
-      _id: createdWalletItem._id,
+      _id: updatedWalletItem._id,
       convertPrice: avgPriceArray.length > 0 ? avgPriceArray[0] : 0,
       convertMarket: defaultConvertMarket,
     };

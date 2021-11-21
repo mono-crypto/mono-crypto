@@ -1,8 +1,6 @@
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateWalletDto } from './create-wallet.dto';
 
-export class UpdateWalletDto extends PartialType(
-  OmitType(CreateWalletDto, ['access_token'] as const),
-) {
+export class UpdateWalletDto extends PartialType(CreateWalletDto) {
   _id: string;
 }
