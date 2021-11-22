@@ -20,7 +20,7 @@ function WalletRealTime() {
   
   const exchangeInfoAboutDollar = (data:Array<any>) => {
     if(data) {
-      let USDDataArray = data[0].data.filter( (item: { cur_unit: string }) => item.cur_unit == "USD" )
+      let USDDataArray = data[0].exchangeInfoArray.filter( (item: { cur_unit: string }) => item.cur_unit == "USD" )
       return USDDataArray[0].bkpr.replaceAll(/\,/g, '')
     }
   }
@@ -31,7 +31,7 @@ function WalletRealTime() {
         return <WalletItem
           data={data}
           key={index}
-          btcToUSDPrice={Number((cryptoMarketPrices.current['BTCUSDT']?.binance.price))}
+          currentBtcToUSDPrice={Number((cryptoMarketPrices.current['BTCUSDT']?.binance.price))}
           itemPrice={Number((cryptoMarketPrices.current[data._id+'BTC']?.binance.price))}
           exchangeInfo={exchangeInfoAboutDollar(exchangeInfoData)}
         />

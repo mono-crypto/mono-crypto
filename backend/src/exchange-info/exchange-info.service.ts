@@ -9,12 +9,53 @@ import {
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
+import { HttpService } from '@nestjs/axios';
+import { Observable } from 'rxjs';
+import { AxiosResponse } from 'axios';
+import { ConfigService } from '@nestjs/config';
+import { catchError, map } from 'rxjs/operators';
+
 @Injectable()
 export class ExchangeInfoService {
   constructor(
     @InjectModel(exchangeInfo.name)
     private exchangeInfoModel: Model<exchangeInfoDocument>,
+    private httpService: HttpService,
+    private configService: ConfigService,
   ) {}
+
+  getExchangeInfo(date: Date): Observable<AxiosResponse<any>> {
+    const _date = new Date(date);
+
+    const _dateFormat = [
+      _date.getFullYear(),
+      ('0' + (_date.getMonth() + 1)).slice(-2),
+      ('0' + _date.getDate()).slice(-2),
+    ].join('');
+
+    return this.httpService
+      .get('https://www.koreaexim.go.kr/site/program/financial/exchangeJSON', {
+        params: {
+          data: 'AP01',
+          authkey: this.configService.get<string>('EXCHANGE_API_KEY'),
+          searchdate: _dateFormat,
+        },
+      })
+      .pipe(
+        map((res) => {
+          const exchangeInfoArray = res.data;
+          res.data = {
+            exchangeInfoArray: exchangeInfoArray,
+            date: _date,
+          };
+          console.log('getExchangeInfo: ', res);
+          return res;
+        }),
+        // catchError((e) => {
+        //   throw new HttpException(e.response.data, e.response.status);
+        // }),
+      );
+  }
 
   create(createExchangeInfoDto: CreateExchangeInfoDto) {
     return 'This action adds a new exchangeInfo';
@@ -29,7 +70,7 @@ export class ExchangeInfoService {
   }
 
   findRecently() {
-    return this.exchangeInfoModel.find().limit(1).sort({ $natural: -1 });
+    return this.exchangeInfoModel.findOne().sort({ _id: -1 });
   }
 
   update(id: number, updateExchangeInfoDto: UpdateExchangeInfoDto) {

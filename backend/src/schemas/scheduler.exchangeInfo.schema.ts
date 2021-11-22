@@ -6,7 +6,10 @@ export type exchangeInfoDocument = exchangeInfo & Document;
 @Schema()
 export class exchangeInfo {
   @Prop()
-  data: Array<any>;
+  exchangeInfoArray: Array<any>;
+
+  @Prop()
+  date: Date;
 }
 
 export const exchangeInfoSchema = SchemaFactory.createForClass(exchangeInfo);

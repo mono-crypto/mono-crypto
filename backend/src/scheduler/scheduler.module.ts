@@ -11,6 +11,7 @@ import {
   exchangeInfoSchema,
 } from '../schemas/scheduler.exchangeInfo.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ExchangeInfoModule } from 'src/exchange-info/exchange-info.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forFeature([
       { name: exchangeInfo.name, schema: exchangeInfoSchema },
     ]),
+    ExchangeInfoModule,
   ],
   providers: [SchedulerService],
   controllers: [SchedulerController],
