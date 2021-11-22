@@ -18,9 +18,9 @@ export interface ICryptoMarketPrices {
 function WalletRealTime() {
   const { exchangeInfoData, walletItemListData, cryptoMarketPrices } = walletRealTimeHook();
   
-  const exchangeInfoAboutDollar = (data:Array<any>) => {
+  const exchangeInfoAboutDollar = (data) => {
     if(data) {
-      let USDDataArray = data[0].exchangeInfoArray.filter( (item: { cur_unit: string }) => item.cur_unit == "USD" )
+      let USDDataArray = data.exchangeInfoArray.filter( (item: { cur_unit: string }) => item.cur_unit == "USD" )
       return USDDataArray[0].bkpr.replaceAll(/\,/g, '')
     }
   }
