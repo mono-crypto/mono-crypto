@@ -6,7 +6,6 @@ import Label from '@/components/common/Label'
 import Select from '@/components/common/Select'
 
 import { coinListModalHook } from '@/hooks/coinListModalHook'
-import { useAddCoinModalVisibleState, useAddCoinModalLoadingState, useAddCoinModalStateSelector, useCoinMarketList } from '@/atoms/addCoinDialog'
 import numberFormat, {formatType} from '@/lib/validation/numberFormat'
 import dateFormat from '@/lib/validation/dateFormat'
 
@@ -17,44 +16,14 @@ const buttonCSS = {
     padding: '0.3rem 0'
 }
 
+const loadingCSS = {
+    width: '5rem',
+    height: '5rem'
+}
+
 export function coinListModal() {
     console.log('추가, 수정 모달')
-    const { addMutation, updateMutation, user } = coinListModalHook()
-    const [, setDialogLoadingState] = useAddCoinModalLoadingState()
-    const [dialogVisibleState, setDialogVisibleState] = useAddCoinModalVisibleState()
-    const [dialogValue, setDialogValue] = useAddCoinModalStateSelector()
-    const coinMarketList = useCoinMarketList();
-
-    const modalConfirmAction = useCallback(async() => {
-        setDialogLoadingState(true);
-        try {
-            if(dialogValue._id) {
-                await updateMutation.mutate({
-                    _id: dialogValue._id,
-                    ticker: dialogValue.ticker,
-                    market: dialogValue.market,
-                    price: dialogValue.price,
-                    ea: dialogValue.ea,
-                    date: dialogValue.date,
-                    access_token: user?.access_token
-                })
-            } else {
-                await addMutation.mutate({
-                    ticker: dialogValue.ticker,
-                    market: dialogValue.market,
-                    price: dialogValue.price,
-                    ea: dialogValue.ea,
-                    date: dialogValue.date,
-                    access_token: user?.access_token
-                })
-            }
-        } catch(e) {
-            console.log(e);
-        }
-        setDialogLoadingState(false);
-        changeDialogState();
-    }, [dialogValue, user])
-    
+    const { coinMarketList, dialogValue, setDialogValue, changeDialogState, confirmAction } = coinListModalHook()
 
     const onChangeModalInput = useCallback((e:React.FormEvent<HTMLInputElement>, type:formatType) => {
         setDialogValue({
@@ -72,20 +41,17 @@ export function coinListModal() {
             [e.currentTarget.name]: value
         });
     }
-
-    const changeDialogState = useCallback(() => {
-        setDialogVisibleState(!dialogVisibleState)
-    }, [dialogVisibleState])
     
     return(
         <Modal
-            modalConfirmAction={modalConfirmAction}
+            modalConfirmAction={confirmAction}
             changeDialogState={changeDialogState}
-            visible={dialogValue.visible}
+            visible={dialogValue.visible ? true : false}
             hasBottomBtn={true}
             hasTitle={dialogValue.ticker}
             btnLoading={dialogValue.loading}
             buttonCSS={buttonCSS}
+            loadingCSS={loadingCSS}
         >
             <div>
                 <Label>

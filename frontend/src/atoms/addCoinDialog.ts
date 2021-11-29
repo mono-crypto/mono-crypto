@@ -9,7 +9,7 @@ const initialState: initialState = {
   market: '',
   price: '0',
   ea: 0,
-  date: '',
+  date: new Date(),
   visible: false,
   loading: false,
 }
