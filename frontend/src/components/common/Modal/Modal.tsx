@@ -3,6 +3,7 @@ import React from 'react'
 import * as S from './styles'
 
 import Button from '@/components/common/Button'
+import Loading from '@/components/common/Loading'
 import { Interpolation } from 'styled-components'
 
 type ModalProps = {
@@ -17,6 +18,7 @@ type ModalProps = {
     buttonCSS?: Interpolation<React.CSSProperties>
     width?: string
     maxWidth?: string
+    loadingCSS?: Interpolation<React.CSSProperties>
 }
 
 function Modal({...props}:ModalProps) {
@@ -41,6 +43,10 @@ function Modal({...props}:ModalProps) {
                 {
                     props.hasCloseButton &&
                     <S.CloseButton onClick={props.changeDialogState}>close</S.CloseButton>
+                }
+                {
+                    props.btnLoading &&
+                    <Loading loadingCSS={props.loadingCSS}/>
                 }
             </S.Wrapper>
         </S.Dimm>
