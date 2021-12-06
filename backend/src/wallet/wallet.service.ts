@@ -12,6 +12,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Wallet, WalletDocument } from '../schemas/wallet.schema';
 
 import { AuthService } from '../auth/auth.service';
+import { IexCloudService } from '../iex-cloud/iex-cloud.service';
 
 @Injectable()
 export class WalletService {
@@ -19,6 +20,7 @@ export class WalletService {
     @InjectModel(Wallet.name) private walletModel: Model<WalletDocument>,
     @InjectQueue('walletItemCalc') private audioQueue: Queue,
     private authService: AuthService,
+    private iexCloudService: IexCloudService,
   ) {}
 
   async create(createWalletDto: CreateWalletDto): Promise<any> {
@@ -26,10 +28,23 @@ export class WalletService {
       createWalletDto.access_token,
     );
 
+    //current MARKET to BTC data
+    const tickerCurrentPrice = await this.iexCloudService
+      .getCurrentPriceByMarket(createWalletDto.ticker + createWalletDto.market)
+      .toPromise();
+
+    //current MARKET to BTC data
+    const btcPrice = await this.iexCloudService
+      .getCurrentPriceByMarket(createWalletDto.market + 'BTC')
+      .toPromise();
+
+    // console.log('btcPrice: ', btcPrice)
     const newCreateWalletDto = {
       ...createWalletDto,
+      tickerCurrentPrice: tickerCurrentPrice,
       user: user,
     };
+    // console.log('newCreateWalletDto: ', newCreateWalletDto)
 
     const createdWalletItem = new this.walletModel(newCreateWalletDto);
 
@@ -65,8 +80,10 @@ export class WalletService {
             ea: 1,
             price: 1,
             market: 1,
-            convertPrice: 1,
+            tickerCurrentPrice: 1,
+            avgPriceByDate: 1,
             convertMarket: 1,
+            USDTPricePerBTCByDate: 1,
           },
         },
         {
@@ -77,10 +94,23 @@ export class WalletService {
             ea: { $push: '$ea' },
             market: { $push: '$market' },
             ticker: { $addToSet: '$ticker' },
-            convertPriceAvg: { $avg: '$convertPrice' },
+            avgPriceByDate: { $push: '$avgPriceByDate' },
             convertMarket: { $addToSet: '$convertMarket' },
+            USDTPricePerBTCByDate: { $push: '$USDTPricePerBTCByDate' },
+            tickerCurrentPrice: { $addToSet: '$tickerCurrentPrice' },
+            purchaseAmount: {
+              $sum: {
+                $multiply: [
+                  '$USDTPricePerBTCByDate',
+                  '$tickerCurrentPrice',
+                  '$price',
+                  '$ea',
+                ],
+              },
+            }, // 삭제필요
           },
         },
+        { $sort: { purchaseAmount: -1 } },
       ],
       (err, res) => {
         console.log(err, 'findUserWalletList:', res);

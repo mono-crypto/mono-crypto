@@ -21,16 +21,33 @@ export class WalletConsumer {
     const updatedWalletItem = job.data.updatedWalletItem;
     console.log('processor: ', updatedWalletItem);
     const defaultConvertMarket = 'BTC';
+    const defaultBTCConvertMarket = 'USDT';
 
-    const avgPriceArray = await this.binanceService.getAvgPriceForTime(
+    const endDate = new Date(updatedWalletItem.date);
+    endDate.setDate(endDate.getDate() + 1);
+
+    const avgCurrencyPriceArray = await this.binanceService.getAvgPriceForTime(
       updatedWalletItem.ticker,
       defaultConvertMarket,
       updatedWalletItem.date,
+      endDate,
+      '1d',
+    );
+
+    const avgBTCPriceToUSDTArray = await this.binanceService.getAvgPriceForTime(
+      'BTC',
+      defaultBTCConvertMarket,
+      updatedWalletItem.date,
+      endDate,
+      '1d',
     );
 
     const updateObj = {
       _id: updatedWalletItem._id,
-      convertPrice: avgPriceArray.length > 0 ? avgPriceArray[0] : 0,
+      avgPriceByDate:
+        avgCurrencyPriceArray.length > 0 ? avgCurrencyPriceArray[0] : 0,
+      USDTPricePerBTCByDate:
+        avgBTCPriceToUSDTArray.length > 0 ? avgBTCPriceToUSDTArray[0] : 0,
       convertMarket: defaultConvertMarket,
     };
 

@@ -5,14 +5,14 @@ import { UpdateExchangeInfoDto } from './dto/update-exchange-info.dto';
 import {
   exchangeInfo,
   exchangeInfoDocument,
-} from '../schemas/scheduler.exchangeInfo.schema';
+} from '../schemas/scheduler.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
-import { ConfigService } from '@nestjs/config';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable()

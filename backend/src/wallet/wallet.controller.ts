@@ -16,6 +16,7 @@ import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { DeleteWalletDto, DeleteTransactionDto } from './dto/delete-wallet.dto';
 import { AuthGuard } from '../auth/auth.guard';
+import { RateLimiterGuard } from 'src/guard/rate-limiter/rate-limiter.guard';
 
 @Controller('wallet')
 @UseGuards(AuthGuard)
@@ -35,6 +36,7 @@ export class WalletController {
     return this.walletService.getUserWalletItemHistory(id, ticker);
   }
 
+  @UseGuards(RateLimiterGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
   @Post()
   async create(@Body() createWalletDto: CreateWalletDto) {

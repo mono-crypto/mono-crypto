@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ExchangeInfoModule } from './exchange-info/exchange-info.module';
 import { AuthModule } from './auth/auth.module';
 import { BinanceModule } from './binance/binance.module';
+import { IexCloudModule } from './iex-cloud/iex-cloud.module';
 
 @Module({
   imports: [
@@ -24,8 +25,8 @@ import { BinanceModule } from './binance/binance.module';
     ExchangeInfoModule,
     AuthModule,
     BinanceModule,
+    IexCloudModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

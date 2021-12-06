@@ -7,17 +7,18 @@ export class CreateWalletDto {
   market: string;
   @Transform(({ value }) =>
     typeof value === 'string'
-      ? parseInt(value.replace(new RegExp(',', 'g'), ''))
+      ? parseFloat(value.replace(new RegExp(',', 'g'), ''))
       : value,
   )
   price: number | string;
   @Transform(({ value }) =>
     typeof value === 'string'
-      ? parseInt(value.replace(new RegExp(',', 'g'), ''))
+      ? parseFloat(value.replace(new RegExp(',', 'g'), ''))
       : value,
   )
   ea: number | string;
   date: Date;
-  convertPrice?: number = 0;
+  avgPriceByDate?: number = 0;
+  USDTPricePerBTCByDate?: number = 0;
   access_token: string;
 }

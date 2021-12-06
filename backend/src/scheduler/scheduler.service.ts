@@ -7,8 +7,11 @@ import { Cron } from '@nestjs/schedule';
 import {
   exchangeInfo,
   exchangeInfoDocument,
-} from '../schemas/scheduler.exchangeInfo.schema';
+  iexCloudCryptoSymbolInfo,
+  iexCloudCryptoSymbolInfoDocument,
+} from '../schemas/scheduler.schema';
 import { ExchangeInfoService } from 'src/exchange-info/exchange-info.service';
+import { IexCloudService } from 'src/iex-cloud/iex-cloud.service';
 
 @Injectable()
 export class SchedulerService {
@@ -16,7 +19,10 @@ export class SchedulerService {
   constructor(
     @InjectModel(exchangeInfo.name)
     private exchangeInfoModel: Model<exchangeInfoDocument>,
+    @InjectModel(iexCloudCryptoSymbolInfo.name)
+    private iexCloudCryptoSymbolInfoModel: Model<iexCloudCryptoSymbolInfoDocument>,
     private exchangeInfoService: ExchangeInfoService,
+    private iexCloudService: IexCloudService,
   ) {}
 
   @Cron('0 */50 * * * *')
@@ -42,5 +48,21 @@ export class SchedulerService {
       exchangeInfoItems.save();
       this.logger.log('crawling...');
     }
+  }
+
+  // @Cron('0 0 23 * * *')
+  @Cron('0 0 */23 * * *')
+  async cronEveryDay() {
+    const cur_date = new Date();
+    const cryptoSymbol = await this.iexCloudService
+      .getCryptoSymbol()
+      .toPromise();
+
+    new this.iexCloudCryptoSymbolInfoModel({
+      data: cryptoSymbol,
+      date: cur_date,
+    }).save();
+
+    this.logger.log('cronEveryDay...');
   }
 }

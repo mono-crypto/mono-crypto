@@ -2,6 +2,27 @@ import { Injectable } from '@nestjs/common';
 import { Spot } from '@binance/connector';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
+
+const interValType = {
+  '1m': '1m',
+  '3m': '3m',
+  '5m': '5m',
+  '15m': '15m',
+  '30m': '30m',
+  '1h': '1h',
+  '2h': '2h',
+  '4h': '4h',
+  '6h': '6h',
+  '8h': '8h',
+  '12h': '12h',
+  '1d': '1d',
+  '3d': '3d',
+  '1w': '1w',
+  '1M': '1M',
+} as const;
+
+export type interValType = typeof interValType[keyof typeof interValType];
 
 @Injectable()
 export class BinanceService {
@@ -68,7 +89,13 @@ export class BinanceService {
     }
   }
 
-  async getKlines(ticker: string, market: string, date: Date) {
+  async getKlines(
+    ticker: string,
+    market: string,
+    startTime: Date,
+    endTime: Date,
+    interval: interValType,
+  ) {
     // [
     //   [
     //     1499040000000,      // Open time
@@ -85,15 +112,14 @@ export class BinanceService {
     //     "17928899.62484339" // Ignore.
     //   ]
     // ]
-    const timeStamp = new Date(date).getTime();
     try {
       const klinesData = await this.client.klines(
         ticker.toUpperCase() + market.toUpperCase(),
-        '1m',
+        interval,
         {
           limit: 1,
-          startTime: timeStamp - 1000 * 60 * 59,
-          endTime: timeStamp,
+          startTime: new Date(startTime).getTime(),
+          endTime: new Date(endTime).getTime(),
         },
       );
       return klinesData.data;
@@ -103,10 +129,23 @@ export class BinanceService {
     }
   }
 
-  async getAvgPriceForTime(ticker: string, market: string, date: Date) {
+  async getAvgPriceForTime(
+    ticker: string,
+    market: string,
+    startTime: Date,
+    endTime: Date,
+    interval: interValType = '1m',
+  ): Promise<Array<number>> {
     try {
-      const klinesData = await this.getKlines(ticker, market, date);
-      // const aggTradeData = await this.getAggTrades(ticker, market, date);
+      const klinesData = await this.getKlines(
+        ticker,
+        market,
+        startTime,
+        endTime,
+        interval,
+      );
+      console.log('klinesData: ', klinesData);
+
       return klinesData.map((item: Array<number | string>, index) => {
         return (Number(item[3]) + Number(item[4])) / 2;
       });
