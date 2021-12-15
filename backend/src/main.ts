@@ -5,6 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './lib/exception-filter/http-exception.filter';
 
 const httpsOptions = {
   key: fs.readFileSync('./certs/api.locals.mono-crypto.com/key.pem'),
@@ -16,6 +17,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ https: httpsOptions }),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3001);
 }
 bootstrap();
